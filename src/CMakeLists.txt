@@ -3,6 +3,8 @@ project(raytracer-challenge)
 
 add_library(raytracer SHARED
     common.h
+    Canvas.cpp
+    Canvas.h
     Color.h
     Tuple.h
 )
