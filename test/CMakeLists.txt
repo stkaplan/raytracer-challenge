@@ -3,7 +3,7 @@ project(raytracer-challenge)
 
 enable_testing()
 
-set(TEST_PROGS Test_Tuple)
+set(TEST_PROGS Test_Color Test_Tuple)
 
 foreach(test_prog ${TEST_PROGS})
     add_executable(${test_prog} ${test_prog}.cpp main.cpp)

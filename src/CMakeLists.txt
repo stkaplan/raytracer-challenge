@@ -3,6 +3,7 @@ project(raytracer-challenge)
 
 add_library(raytracer SHARED
     common.h
-    Tuple.cpp
+    Color.h
     Tuple.h
 )
+set_target_properties(raytracer PROPERTIES LINKER_LANGUAGE CXX)
