@@ -7,20 +7,21 @@ namespace raytracer {
 
 class Color {
 public:
-    using element_type = Tuple::element_type;
+    using elements_type = Tuple<double, 3>;
+    using element_type = elements_type::element_type;
 
 private:
-    Tuple elements;
+    elements_type elements;
 
 public:
-    constexpr Color(const Tuple& t)
+    constexpr Color(const elements_type t)
         : elements(t) { }
     constexpr Color(element_type r, element_type g, element_type b)
-        : elements(Tuple(r, g, b, 0)) { }
+        : elements({r, g, b}) { }
 
-    constexpr element_type r() const { return elements.x(); }
-    constexpr element_type g() const { return elements.y(); }
-    constexpr element_type b() const { return elements.z(); }
+    constexpr element_type r() const { return elements[0]; }
+    constexpr element_type g() const { return elements[1]; }
+    constexpr element_type b() const { return elements[2]; }
 
     constexpr bool operator==(const Color& other) const {
         return elements == other.elements;

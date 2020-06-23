@@ -7,11 +7,11 @@ namespace raytracer {
 
 class Projectile {
 private:
-    Tuple position;
-    Tuple velocity;
+    Tuple4 position;
+    Tuple4 velocity;
 
 public:
-    constexpr Projectile(const Tuple& position, const Tuple& velocity)
+    constexpr Projectile(const Tuple4& position, const Tuple4& velocity)
             : position(position), velocity(velocity) {
         if (!position.is_point()) {
             throw std::invalid_argument("position must be a point");
@@ -21,8 +21,8 @@ public:
         }
     }
 
-    constexpr const Tuple& get_position() const { return position; }
-    constexpr const Tuple& get_velocity() const { return velocity; }
+    constexpr const auto& get_position() const { return position; }
+    constexpr const auto& get_velocity() const { return velocity; }
 };
 
 } // namespace raytracer

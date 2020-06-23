@@ -5,7 +5,10 @@ using namespace raytracer;
 
 TEST_CASE("Color is a tuple")
 {
-    REQUIRE(make_color(1.5, 2.5, 3.5) == Tuple(1.5, 2.5, 3.5, 0));
+    Color c = make_color(1.5, 2.5, 3.5);
+    REQUIRE(float_equals(c.r(), 1.5));
+    REQUIRE(float_equals(c.g(), 2.5));
+    REQUIRE(float_equals(c.b(), 3.5));
 }
 
 TEST_CASE("Can add colors")

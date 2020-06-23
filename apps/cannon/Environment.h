@@ -7,11 +7,11 @@ namespace raytracer {
 
 class Environment {
 private:
-    Tuple gravity;
-    Tuple wind;
+    Tuple4 gravity;
+    Tuple4 wind;
 
 public:
-    constexpr Environment(const Tuple& gravity, const Tuple& wind)
+    constexpr Environment(const Tuple4& gravity, const Tuple4& wind)
             : gravity(gravity), wind(wind) {
         if (!gravity.is_vector()) {
             throw std::invalid_argument("gravity must be a vector");
@@ -21,8 +21,8 @@ public:
         }
     }
 
-    constexpr const Tuple& get_gravity() const { return gravity; }
-    constexpr const Tuple& get_wind() const { return wind; }
+    constexpr const auto& get_gravity() const { return gravity; }
+    constexpr const auto& get_wind() const { return wind; }
 };
 
 } // namespace raytracer

@@ -2,6 +2,8 @@
 #define _CANVAS_H_
 
 #include "Color.h"
+
+#include <stdexcept>
 #include <vector>
 
 namespace raytracer {
