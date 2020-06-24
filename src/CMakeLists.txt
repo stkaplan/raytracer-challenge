@@ -6,6 +6,7 @@ add_library(raytracer SHARED
     Canvas.cpp
     Canvas.h
     Color.h
+    Matrix.h
     Tuple.h
 )
 set_target_properties(raytracer PROPERTIES LINKER_LANGUAGE CXX)

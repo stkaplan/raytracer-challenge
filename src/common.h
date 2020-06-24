@@ -5,12 +5,19 @@
 
 namespace raytracer {
 
-static constexpr double EPSILON = 1e-5;
+namespace detail {
+static constexpr double EPSILON = 1e-4;
+
+template <typename T>
+static constexpr T fabs(T x) {
+    return x >= 0 ? x : -x;
+}
+} // namespace detail
 
 template <typename S, typename T>
 static constexpr bool float_equals(S x, T y)
 {
-    return std::fabs(x - y) < EPSILON;
+    return detail::fabs(x - y) < detail::EPSILON;
 }
 
 } // namespace raytracer

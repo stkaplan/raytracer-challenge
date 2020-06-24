@@ -107,6 +107,7 @@ public:
     constexpr typename std::enable_if_t<M >= 4, T>
     w() const { return elements[3]; }
 
+    constexpr Tuple() { }
     constexpr Tuple(const elements_type& elements)
         : elements(elements) { }
     constexpr Tuple(const T(&init)[N]) {
