@@ -80,6 +80,12 @@ public:
         return result;
     }
 
+    // Multiply in reverse order, for chaining transformations.
+    template<size_t R2>
+    constexpr auto apply(const Matrix<T, R2, C>& other) const {
+        return other * *this;
+    }
+
     constexpr auto operator*(const Tuple<T, C>& other) const {
         Tuple<T, R> result;
         for (size_t row = 0; row < R; ++row) {
