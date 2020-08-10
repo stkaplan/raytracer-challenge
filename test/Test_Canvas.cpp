@@ -9,8 +9,8 @@ TEST_CASE("Canvas initializes to all black")
 {
     Color black(0, 0, 0);
     Canvas canvas(10, 20);
-    REQUIRE(canvas.getWidth() == 10);
-    REQUIRE(canvas.getHeight() == 20);
+    REQUIRE(canvas.get_width() == 10);
+    REQUIRE(canvas.get_height() == 20);
     for (const auto& pixel : canvas) {
         REQUIRE(pixel == black);
     }
@@ -21,8 +21,8 @@ TEST_CASE("Const Canvas initialized to all black")
 {
     Color black(0, 0, 0);
     const Canvas canvas(15, 25);
-    REQUIRE(canvas.getWidth() == 15);
-    REQUIRE(canvas.getHeight() == 25);
+    REQUIRE(canvas.get_width() == 15);
+    REQUIRE(canvas.get_height() == 25);
     for (const auto& pixel : canvas) {
         REQUIRE(pixel == black);
     }
@@ -32,14 +32,14 @@ TEST_CASE("Const Canvas initialized to all black")
 TEST_CASE("Can set colors of pixels")
 {
     Canvas canvas(10, 20);
-    for (size_t x = 0; x < canvas.getWidth(); ++x) {
-        for (size_t y = 0; y < canvas.getHeight(); ++y) {
+    for (size_t x = 0; x < canvas.get_width(); ++x) {
+        for (size_t y = 0; y < canvas.get_height(); ++y) {
             canvas.at(x, y) = Color(x, y, x+y);
         }
     }
 
-    for (size_t x = 0; x < canvas.getWidth(); ++x) {
-        for (size_t y = 0; y < canvas.getHeight(); ++y) {
+    for (size_t x = 0; x < canvas.get_width(); ++x) {
+        for (size_t y = 0; y < canvas.get_height(); ++y) {
             REQUIRE(canvas.at(x, y) == Color(x, y, x+y));
         }
     }

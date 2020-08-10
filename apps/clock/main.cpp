@@ -7,7 +7,7 @@ using namespace raytracer;
 
 void draw(Canvas& canvas, const Tuple4& point, const Color& color)
 {
-    auto translate_to_center = translation(canvas.getWidth()/2, canvas.getHeight()/2, 0);
+    auto translate_to_center = translation(canvas.get_width()/2, canvas.get_height()/2, 0);
     auto translated_point = translate_to_center * point;
     canvas.at(translated_point.x(), translated_point.y()) = color;
 }

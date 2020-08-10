@@ -31,9 +31,9 @@ int main()
 
         int x = std::round(proj.get_position().x());
         int y = std::round(proj.get_position().y());
-        assert(x >= 0 && x < canvas.getWidth());
-        assert(y >= 0 && y < canvas.getHeight());
-        canvas.at(x, canvas.getHeight() - y) = red;
+        assert(x >= 0 && x < canvas.get_width());
+        assert(y >= 0 && y < canvas.get_height());
+        canvas.at(x, canvas.get_height() - y) = red;
 
         ++num_ticks;
         proj = tick(env, proj);

@@ -24,8 +24,8 @@ public:
         : width(width), height(height), pixels(height*width, make_color(0, 0, 0))
     { }
 
-    size_t getWidth() const { return width; }
-    size_t getHeight() const { return height; }
+    size_t get_width() const { return width; }
+    size_t get_height() const { return height; }
     Color& at(size_t x, size_t y) { return const_cast<Color&>(const_cast<const Canvas&>(*this).at(x, y)); }
     const Color& at(size_t x, size_t y) const {
         if (x >= width) throw std::out_of_range("Canvas::at(): invalid x value");
