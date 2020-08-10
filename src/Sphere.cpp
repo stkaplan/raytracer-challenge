@@ -1,4 +1,6 @@
 #include "Sphere.h"
+
+#include "Intersection.h"
 #include "Ray.h"
 
 #include <cmath>
@@ -6,7 +8,7 @@
 
 namespace raytracer {
 
-std::vector<double> Sphere::intersect(const Ray& ray) {
+std::vector<Intersection> Sphere::intersect(const Ray& ray) {
     const auto sphere_to_ray = ray.get_origin() - make_point(0, 0, 0);
     const auto direction = ray.get_direction();
 
@@ -19,7 +21,7 @@ std::vector<double> Sphere::intersect(const Ray& ray) {
 
     const auto t1 = (-b - std::sqrt(discriminant)) / (2 * a);
     const auto t2 = (-b + std::sqrt(discriminant)) / (2 * a);
-    return {t1, t2};
+    return {Intersection(t1, *this), Intersection(t2, *this)};
 }
 
 } // namespace raytracer

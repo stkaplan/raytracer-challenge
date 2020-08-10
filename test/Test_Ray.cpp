@@ -1,5 +1,7 @@
 #include "catch.hpp"
 #include "Ray.h"
+
+#include "Intersection.h"
 #include "Sphere.h"
 #include "Tuple.h"
 
@@ -33,8 +35,10 @@ TEST_CASE("Ray intersects sphere at two points")
     Ray r(origin, direction);
     Sphere s;
 
-    std::vector<double> result{4.0, 6.0};
-    REQUIRE(s.intersect(r) == result);
+    auto result = s.intersect(r);
+    REQUIRE(result.size() == 2);
+    REQUIRE(result[0].get_t() == 4.0);
+    REQUIRE(result[1].get_t() == 6.0);
 }
 
 TEST_CASE("Ray intersecting sphere at tangent returns same point twice")
@@ -44,8 +48,10 @@ TEST_CASE("Ray intersecting sphere at tangent returns same point twice")
     Ray r(origin, direction);
     Sphere s;
 
-    std::vector<double> result{5.0, 5.0};
-    REQUIRE(s.intersect(r) == result);
+    auto result = s.intersect(r);
+    REQUIRE(result.size() == 2);
+    REQUIRE(result[0].get_t() == 5.0);
+    REQUIRE(result[1].get_t() == 5.0);
 }
 
 TEST_CASE("Ray missing sphere returns no points")
@@ -55,8 +61,8 @@ TEST_CASE("Ray missing sphere returns no points")
     Ray r(origin, direction);
     Sphere s;
 
-    std::vector<double> result{};
-    REQUIRE(s.intersect(r) == result);
+    auto result = s.intersect(r);
+    REQUIRE(result.size() == 0);
 }
 
 TEST_CASE("Ray originating inside sphere includes points in both directions")
@@ -66,8 +72,10 @@ TEST_CASE("Ray originating inside sphere includes points in both directions")
     Ray r(origin, direction);
     Sphere s;
 
-    std::vector<double> result{-1.0, 1.0};
-    REQUIRE(s.intersect(r) == result);
+    auto result = s.intersect(r);
+    REQUIRE(result.size() == 2);
+    REQUIRE(result[0].get_t() == -1.0);
+    REQUIRE(result[1].get_t() == 1.0);
 }
 
 TEST_CASE("Ray in front of sphere returns two negative points")
@@ -77,6 +85,21 @@ TEST_CASE("Ray in front of sphere returns two negative points")
     Ray r(origin, direction);
     Sphere s;
 
-    std::vector<double> result{-6.0, -4.0};
-    REQUIRE(s.intersect(r) == result);
+    auto result = s.intersect(r);
+    REQUIRE(result.size() == 2);
+    REQUIRE(result[0].get_t() == -6.0);
+    REQUIRE(result[1].get_t() == -4.0);
+}
+
+TEST_CASE("Intersect sets the object of intersection")
+{
+    auto origin = make_point(0, 0, -5);
+    auto direction = make_vector(0, 0, 1);
+    Ray r(origin, direction);
+    Sphere s;
+
+    auto result = s.intersect(r);
+    REQUIRE(result.size() == 2);
+    REQUIRE(&result[0].get_object() == &s);
+    REQUIRE(&result[1].get_object() == &s);
 }

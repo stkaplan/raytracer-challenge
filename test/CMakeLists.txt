@@ -1,7 +1,15 @@
 cmake_minimum_required(VERSION 3.10)
 project(raytracer-challenge)
 
-set(TEST_PROGS Test_Canvas Test_Color Test_Matrix Test_Ray Test_Transformations Test_Tuple)
+set(TEST_PROGS
+    Test_Canvas
+    Test_Color
+    Test_Intersection
+    Test_Matrix
+    Test_Ray
+    Test_Transformations
+    Test_Tuple
+)
 
 foreach(test_prog ${TEST_PROGS})
     add_executable(${test_prog} ${test_prog}.cpp main.cpp)

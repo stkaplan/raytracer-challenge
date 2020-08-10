@@ -6,6 +6,8 @@ add_library(raytracer SHARED
     Canvas.cpp
     Canvas.h
     Color.h
+    Intersection.cpp
+    Intersection.h
     Matrix.h
     Ray.h
     Sphere.cpp
