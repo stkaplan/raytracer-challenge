@@ -7,6 +7,9 @@ add_library(raytracer SHARED
     Canvas.h
     Color.h
     Matrix.h
+    Ray.h
+    Sphere.cpp
+    Sphere.h
     Transformations.h
     Tuple.h
 )
