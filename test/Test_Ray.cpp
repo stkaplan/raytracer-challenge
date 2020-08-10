@@ -3,6 +3,7 @@
 
 #include "Intersection.h"
 #include "Sphere.h"
+#include "Transformations.h"
 #include "Tuple.h"
 
 using namespace raytracer;
@@ -102,4 +103,28 @@ TEST_CASE("Intersect sets the object of intersection")
     REQUIRE(result.size() == 2);
     REQUIRE(&result[0].get_object() == &s);
     REQUIRE(&result[1].get_object() == &s);
+}
+
+TEST_CASE("Can translate a ray")
+{
+    auto origin = make_point(1, 2, 3);
+    auto direction = make_vector(0, 1, 0);
+    Ray r(origin, direction);
+
+    auto m = translation(3, 4, 5);
+    auto r2 = r.transform(m);
+    REQUIRE(r2.get_origin() == make_point(4, 6, 8));
+    REQUIRE(r2.get_direction() == make_vector(0, 1, 0));
+}
+
+TEST_CASE("Can scale a ray")
+{
+    auto origin = make_point(1, 2, 3);
+    auto direction = make_vector(0, 1, 0);
+    Ray r(origin, direction);
+
+    auto m = scale(2, 3, 4);
+    auto r2 = r.transform(m);
+    REQUIRE(r2.get_origin() == make_point(2, 6, 12));
+    REQUIRE(r2.get_direction() == make_vector(0, 3, 0));
 }

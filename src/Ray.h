@@ -1,6 +1,7 @@
 #ifndef _RAY_H_
 #define _RAY_H_
 
+#include "Transformations.h"
 #include "Tuple.h"
 
 namespace raytracer {
@@ -20,6 +21,10 @@ public:
 
     Tuple4 position(double t) const {
         return origin + (direction * t);
+    }
+
+    Ray transform(const TransformationMatrix& m) {
+        return Ray(m * origin, m * direction);
     }
 };
 
