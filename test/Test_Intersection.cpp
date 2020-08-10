@@ -20,9 +20,9 @@ TEST_CASE("Have a hit when all intersections have positive t")
     Intersection i2(2, s);
     std::vector<Intersection> xs{i2, i1};
 
-    auto hit_value = hit(xs);
-    REQUIRE(hit_value.has_value());
-    REQUIRE(hit_value.value() == i1);
+    auto hit = find_hit(xs);
+    REQUIRE(hit.has_value());
+    REQUIRE(hit.value() == i1);
 }
 
 TEST_CASE("Have a hit when some intersections have negative t")
@@ -32,9 +32,9 @@ TEST_CASE("Have a hit when some intersections have negative t")
     Intersection i2(1, s);
     std::vector<Intersection> xs{i2, i1};
 
-    auto hit_value = hit(xs);
-    REQUIRE(hit_value.has_value());
-    REQUIRE(hit_value.value() == i2);
+    auto hit = find_hit(xs);
+    REQUIRE(hit.has_value());
+    REQUIRE(hit.value() == i2);
 }
 
 TEST_CASE("Have a hit when all intersections have negative t")
@@ -44,8 +44,8 @@ TEST_CASE("Have a hit when all intersections have negative t")
     Intersection i2(-1, s);
     std::vector<Intersection> xs{i2, i1};
 
-    auto hit_value = hit(xs);
-    REQUIRE(hit_value == std::nullopt);
+    auto hit = find_hit(xs);
+    REQUIRE(hit == std::nullopt);
 }
 
 TEST_CASE("Hit values is always the lowest non-negative intersection")
@@ -57,7 +57,7 @@ TEST_CASE("Hit values is always the lowest non-negative intersection")
     Intersection i4(2, s);
     std::vector<Intersection> xs{i1, i2, i3, i4};
 
-    auto hit_value = hit(xs);
-    REQUIRE(hit_value.has_value());
-    REQUIRE(hit_value == i4);
+    auto hit = find_hit(xs);
+    REQUIRE(hit.has_value());
+    REQUIRE(hit == i4);
 }

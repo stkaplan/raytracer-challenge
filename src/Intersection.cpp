@@ -5,7 +5,7 @@
 
 namespace raytracer {
 
-std::optional<Intersection> hit(const std::vector<Intersection>& intersections) {
+std::optional<Intersection> find_hit(const std::vector<Intersection>& intersections) {
     Intersection const * best = nullptr;
     for (const auto& intersection : intersections) {
         double t = intersection.get_t();

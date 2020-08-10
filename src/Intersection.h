@@ -35,7 +35,7 @@ public:
 };
 
 // Returns intersection with smallest non-negative t.
-std::optional<Intersection> hit(const std::vector<Intersection>& intersections);
+std::optional<Intersection> find_hit(const std::vector<Intersection>& intersections);
 
 } // namespace raytracer
 
