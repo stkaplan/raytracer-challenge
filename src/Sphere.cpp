@@ -3,12 +3,18 @@
 #include "Intersection.h"
 #include "Ray.h"
 
+#include <cassert>
 #include <cmath>
 #include <vector>
 
 namespace raytracer {
 
-std::vector<Intersection> Sphere::intersect(const Ray& ray) {
+std::vector<Intersection> Sphere::intersect(const Ray& r) {
+    const auto inverse_opt = transform.inverse();
+    assert(inverse_opt.has_value());
+    const auto inverse = inverse_opt.value();
+    const auto ray = r.transform(inverse);
+
     const auto sphere_to_ray = ray.get_origin() - make_point(0, 0, 0);
     const auto direction = ray.get_direction();
 

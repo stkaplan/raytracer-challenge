@@ -7,6 +7,7 @@ set(TEST_PROGS
     Test_Intersection
     Test_Matrix
     Test_Ray
+    Test_Spheres
     Test_Transformations
     Test_Tuple
 )

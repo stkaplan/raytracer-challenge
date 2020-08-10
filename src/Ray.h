@@ -23,7 +23,7 @@ public:
         return origin + (direction * t);
     }
 
-    Ray transform(const TransformationMatrix& m) {
+    Ray transform(const TransformationMatrix& m) const {
         return Ray(m * origin, m * direction);
     }
 };
