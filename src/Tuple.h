@@ -92,19 +92,31 @@ public:
     static constexpr T point_marker = 1.0;
 
     template <size_t M = N>
-    constexpr typename std::enable_if_t<M >= 1, T>
+    constexpr typename std::enable_if_t<M >= 1, T&>
+    x() { return elements[0]; }
+    template <size_t M = N>
+    constexpr typename std::enable_if_t<M >= 1, const T&>
     x() const { return elements[0]; }
 
     template <size_t M = N>
-    constexpr typename std::enable_if_t<M >= 2, T>
+    constexpr typename std::enable_if_t<M >= 2, T&>
+    y() { return elements[1]; }
+    template <size_t M = N>
+    constexpr typename std::enable_if_t<M >= 2, const T&>
     y() const { return elements[1]; }
 
     template <size_t M = N>
-    constexpr typename std::enable_if_t<M >= 3, T>
+    constexpr typename std::enable_if_t<M >= 3, T&>
+    z() { return elements[2]; }
+    template <size_t M = N>
+    constexpr typename std::enable_if_t<M >= 3, const T&>
     z() const { return elements[2]; }
 
     template <size_t M = N>
-    constexpr typename std::enable_if_t<M >= 4, T>
+    constexpr typename std::enable_if_t<M >= 4, T&>
+    w() { return elements[3]; }
+    template <size_t M = N>
+    constexpr typename std::enable_if_t<M >= 4, const T&>
     w() const { return elements[3]; }
 
     constexpr Tuple() { }
