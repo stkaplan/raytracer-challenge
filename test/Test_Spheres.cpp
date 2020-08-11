@@ -42,3 +42,51 @@ TEST_CASE("Ray intersection with translated sphere")
     auto result = s.intersect(r);
     REQUIRE(result.size() == 0);
 }
+
+TEST_CASE("Normal on sphere at point on x-axis")
+{
+    Sphere s;
+    auto n = s.normal_at(make_point(1, 0, 0));
+    REQUIRE(n == make_vector(1, 0, 0));
+    REQUIRE(n == n.normalize());
+}
+
+TEST_CASE("Normal on sphere at point on y-axis")
+{
+    Sphere s;
+    auto n = s.normal_at(make_point(0, 1, 0));
+    REQUIRE(n == make_vector(0, 1, 0));
+    REQUIRE(n == n.normalize());
+}
+
+TEST_CASE("Normal on sphere at point on z-axis")
+{
+    Sphere s;
+    auto n = s.normal_at(make_point(0, 0, 1));
+    REQUIRE(n == make_vector(0, 0, 1));
+    REQUIRE(n == n.normalize());
+}
+
+TEST_CASE("Normal on sphere at non-axial point")
+{
+    Sphere s;
+    double num = std::sqrt(3.0) / 3.0;
+    auto n = s.normal_at(make_point(num, num, num));
+    REQUIRE(n == make_vector(num, num, num));
+    REQUIRE(n == n.normalize());
+}
+
+TEST_CASE("Normal on translated sphere")
+{
+    Sphere s(translation(0, 1, 0));
+    auto n = s.normal_at(make_point(0, 1.70711, -0.70711));
+    REQUIRE(n == make_vector(0, 0.70711, -0.70711));
+}
+
+TEST_CASE("Normal on scaled and rotated sphere")
+{
+    auto transform = scale(1.0, 0.5, 1.0) * rotation<Dimension::Z>(M_PI / 5.0);
+    Sphere s(transform);
+    auto n = s.normal_at(make_point(0, std::sqrt(2.0) / 2.0, -std::sqrt(2.0) / 2.0));
+    REQUIRE(n == make_vector(0, 0.97014, -0.24254));
+}

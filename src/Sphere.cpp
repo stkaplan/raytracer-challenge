@@ -9,7 +9,7 @@
 
 namespace raytracer {
 
-std::vector<Intersection> Sphere::intersect(const Ray& r) {
+std::vector<Intersection> Sphere::intersect(const Ray& r) const {
     const auto inverse_opt = transform.inverse();
     assert(inverse_opt.has_value());
     const auto inverse = inverse_opt.value();
@@ -28,6 +28,16 @@ std::vector<Intersection> Sphere::intersect(const Ray& r) {
     const auto t1 = (-b - std::sqrt(discriminant)) / (2 * a);
     const auto t2 = (-b + std::sqrt(discriminant)) / (2 * a);
     return {Intersection(t1, *this), Intersection(t2, *this)};
+}
+
+Tuple4 Sphere::normal_at(const Tuple4& world_point) const
+{
+    auto inverse = transform.inverse().value();
+    auto object_point = inverse * world_point;
+    auto object_normal = object_point - make_point(0, 0, 0);
+    auto world_normal = inverse.transpose() * object_normal;
+    world_normal.w() = 0;
+    return world_normal.normalize();
 }
 
 } // namespace raytracer

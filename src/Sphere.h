@@ -25,7 +25,8 @@ public:
     const TransformationMatrix& get_transform() const { return transform; }
     void set_transform(const TransformationMatrix& m) { transform = m; }
 
-    std::vector<Intersection> intersect(const Ray& ray);
+    std::vector<Intersection> intersect(const Ray& ray) const;
+    Tuple4 normal_at(const Tuple4& world_point) const;
 };
 
 } // namespace raytracer

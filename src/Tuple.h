@@ -191,6 +191,10 @@ public:
     Tuple normalize() const {
         return {*this / magnitude()};
     }
+
+    Tuple reflect(const Tuple& normal) const {
+        return *this - (normal * 2.0 * dot_product(normal));
+    }
 };
 
 using Tuple4 = Tuple<double, 4>;

@@ -2,6 +2,8 @@
 #include "common.h"
 #include "Tuple.h"
 
+#include <cmath>
+
 using namespace raytracer;
 
 TEST_CASE("Tuple with w=1.0 is a point")
@@ -133,4 +135,20 @@ TEST_CASE("Cross product gives correct value")
     Tuple4 t2 = make_vector(2, 3, 4);
     REQUIRE(t1.cross_product(t2) == make_vector(-1, 2, -1));
     REQUIRE(t2.cross_product(t1) == make_vector(1, -2, 1));
+}
+
+TEST_CASE("Reflecting a vector approaching at 45 degrees")
+{
+    auto v = make_vector(1, -1, 0);
+    auto n = make_vector(0, 1, 0);
+    auto r = v.reflect(n);
+    REQUIRE(r == make_vector(1, 1, 0));
+}
+
+TEST_CASE("Reflecting a vector off a slanted surface")
+{
+    auto v = make_vector(0, -1, 0);
+    auto n = make_vector(std::sqrt(2.0) / 2.0, std::sqrt(2.0) / 2.0, 0);
+    auto r = v.reflect(n);
+    REQUIRE(r == make_vector(1, 0, 0));
 }
