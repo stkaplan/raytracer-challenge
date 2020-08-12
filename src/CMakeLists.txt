@@ -8,7 +8,10 @@ add_library(raytracer SHARED
     Color.h
     Intersection.cpp
     Intersection.h
+    Material.cpp
+    Material.h
     Matrix.h
+    PointLight.h
     Ray.h
     Sphere.cpp
     Sphere.h

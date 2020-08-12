@@ -90,3 +90,20 @@ TEST_CASE("Normal on scaled and rotated sphere")
     auto n = s.normal_at(make_point(0, std::sqrt(2.0) / 2.0, -std::sqrt(2.0) / 2.0));
     REQUIRE(n == make_vector(0, 0.97014, -0.24254));
 }
+
+TEST_CASE("Sphere with default material")
+{
+    Sphere s;
+    auto m = s.get_material();
+    Material default_material;
+    REQUIRE(m == default_material);
+}
+
+TEST_CASE("Sphere with non-default material")
+{
+    Sphere s;
+    Material m(make_color(0.1, 0.2, 0.3), 1.5, 2.5, 3.5, 4.5);
+    s.set_material(m);
+    REQUIRE(s.get_material().get_color() == make_color(0.1, 0.2, 0.3));
+    REQUIRE(s.get_material().get_shininess() == 4.5);
+}

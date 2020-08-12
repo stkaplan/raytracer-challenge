@@ -5,9 +5,11 @@ set(TEST_PROGS
     Test_Canvas
     Test_Color
     Test_Intersection
+    Test_Material
     Test_Matrix
+    Test_PointLight
     Test_Ray
-    Test_Spheres
+    Test_Sphere
     Test_Transformations
     Test_Tuple
 )
