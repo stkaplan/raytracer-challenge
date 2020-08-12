@@ -17,5 +17,7 @@ add_library(raytracer SHARED
     Sphere.h
     Transformations.h
     Tuple.h
+    World.cpp
+    World.h
 )
 set_target_properties(raytracer PROPERTIES LINKER_LANGUAGE CXX)

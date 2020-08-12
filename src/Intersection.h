@@ -14,23 +14,27 @@ class Sphere;
 class Intersection {
 private:
     double t; // Distance of intersection
-    const Sphere& object;
+    const Sphere* object; // Non-owning pointer
 
 public:
     Intersection(double t, const Sphere& object)
-        : t(t), object(object)
+        : t(t), object(&object)
     { }
 
+    Intersection(const Intersection&) = default;
+    Intersection(Intersection&&) = default;
+    Intersection& operator=(const Intersection& other) = default;
+
     double get_t() const { return t; }
-    const auto& get_object() const { return object; }
+    const Sphere& get_object() const { return *object; }
 
     bool operator==(const Intersection& other) const {
         return float_equals(t, other.t)
-            && &object == &other.object;
+            && object == other.object;
     }
 
     friend std::ostream& operator<<(std::ostream& os, const Intersection& i) {
-        return os << "Intersection(" << i.t << ", " << &i.object << ")\n";
+        return os << "Intersection(" << i.t << ", " << i.object << ")\n";
     }
 };
 

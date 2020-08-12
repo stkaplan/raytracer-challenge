@@ -16,6 +16,8 @@ public:
         : position(position), intensity(intensity)
     { }
 
+    bool operator==(const PointLight& other) const = default;
+
     const Tuple4& get_position() const { return position; }
     const Color& get_intensity() const { return intensity; }
 };

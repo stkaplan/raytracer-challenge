@@ -28,13 +28,7 @@ public:
           specular(specular), shininess(shininess)
     { }
 
-    bool operator==(const Material& other) const {
-        return color == other.color
-            && ambient == other.ambient
-            && diffuse == other.diffuse
-            && specular == other.specular
-            && shininess == other.shininess;
-    }
+    bool operator==(const Material& other) const = default;
 
     const Color& get_color() const { return color; }
     void set_color(const Color& c) { color = c; }

@@ -23,6 +23,10 @@ public:
         set_transform(make_identity<double, 4>());
     }
 
+    bool operator==(const Sphere& other) const {
+        return transform == other.transform && material == other.material;
+    }
+
     const TransformationMatrix& get_transform() const { return transform; }
     void set_transform(const TransformationMatrix& m) {
         transform = m;

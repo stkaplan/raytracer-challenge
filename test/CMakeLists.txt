@@ -12,6 +12,7 @@ set(TEST_PROGS
     Test_Sphere
     Test_Transformations
     Test_Tuple
+    Test_World
 )
 
 foreach(test_prog ${TEST_PROGS})
