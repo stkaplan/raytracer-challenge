@@ -37,10 +37,19 @@ public:
     }
 
     const Color& get_color() const { return color; }
+    void set_color(const Color& c) { color = c; }
+
     double get_ambient() const { return ambient; }
+    void set_ambient(double val) { ambient = val; }
+
     double get_diffuse() const { return diffuse; }
+    void set_diffuse(double val) { diffuse = val; }
+
     double get_specular() const { return specular; }
+    void set_specular(double val) { specular = val; }
+
     double get_shininess() const { return shininess; }
+    void set_shininess(double val) { shininess = val; }
 
     Color lighting(const PointLight& light,
                    const Tuple4& position,
