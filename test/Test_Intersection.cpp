@@ -55,7 +55,8 @@ TEST_CASE("Hit values is always the lowest non-negative intersection")
     Intersection i2(7, s);
     Intersection i3(-3, s);
     Intersection i4(2, s);
-    std::vector<Intersection> xs{i1, i2, i3, i4};
+    Intersection i5(3, s);
+    std::vector<Intersection> xs{i1, i2, i3, i4, i5};
 
     auto hit = find_hit(xs);
     REQUIRE(hit.has_value());

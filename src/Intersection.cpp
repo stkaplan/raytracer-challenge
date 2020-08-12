@@ -10,9 +10,7 @@ std::optional<Intersection> find_hit(const std::vector<Intersection>& intersecti
     for (const auto& intersection : intersections) {
         double t = intersection.get_t();
         if (t >= 0.0) {
-            if (best && t < best->get_t()) {
-                best = &intersection;
-            } else {
+            if (!best || t < best->get_t()) {
                 best = &intersection;
             }
         }
