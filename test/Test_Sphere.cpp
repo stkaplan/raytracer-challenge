@@ -15,7 +15,8 @@ TEST_CASE("Sphere has default transformation of identity matrix")
 TEST_CASE("Can set transformation for sphere")
 {
     auto t = translation(2, 3, 4);
-    Sphere s(t);
+    Sphere s;
+    s.set_transform(t);
     REQUIRE(s.get_transform() == t);
 }
 
@@ -24,7 +25,8 @@ TEST_CASE("Ray intersection with scaled sphere")
     auto origin = make_point(0, 0, -5);
     auto direction = make_vector(0, 0, 1);
     Ray r(origin, direction);
-    Sphere s(scale(2, 2, 2));
+    Sphere s;
+    s.set_transform(scale(2, 2, 2));
 
     auto result = s.intersect(r);
     REQUIRE(result.size() == 2);
@@ -37,7 +39,8 @@ TEST_CASE("Ray intersection with translated sphere")
     auto origin = make_point(0, 0, -5);
     auto direction = make_vector(0, 0, 1);
     Ray r(origin, direction);
-    Sphere s(translation(5, 0, 0));
+    Sphere s;
+    s.set_transform(translation(5, 0, 0));
 
     auto result = s.intersect(r);
     REQUIRE(result.size() == 0);
@@ -78,7 +81,8 @@ TEST_CASE("Normal on sphere at non-axial point")
 
 TEST_CASE("Normal on translated sphere")
 {
-    Sphere s(translation(0, 1, 0));
+    Sphere s;
+    s.set_transform(translation(0, 1, 0));
     auto n = s.normal_at(make_point(0, 1.70711, -0.70711));
     REQUIRE(n == make_vector(0, 0.70711, -0.70711));
 }
@@ -86,7 +90,8 @@ TEST_CASE("Normal on translated sphere")
 TEST_CASE("Normal on scaled and rotated sphere")
 {
     auto transform = scale(1.0, 0.5, 1.0) * rotation<Dimension::Z>(M_PI / 5.0);
-    Sphere s(transform);
+    Sphere s;
+    s.set_transform(transform);
     auto n = s.normal_at(make_point(0, std::sqrt(2.0) / 2.0, -std::sqrt(2.0) / 2.0));
     REQUIRE(n == make_vector(0, 0.97014, -0.24254));
 }

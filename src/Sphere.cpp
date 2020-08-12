@@ -10,10 +10,7 @@
 namespace raytracer {
 
 std::vector<Intersection> Sphere::intersect(const Ray& r) const {
-    const auto inverse_opt = transform.inverse();
-    assert(inverse_opt.has_value());
-    const auto inverse = inverse_opt.value();
-    const auto ray = r.transform(inverse);
+    const auto ray = r.transform(transform_inverse);
 
     const auto sphere_to_ray = ray.get_origin() - make_point(0, 0, 0);
     const auto direction = ray.get_direction();
@@ -32,10 +29,9 @@ std::vector<Intersection> Sphere::intersect(const Ray& r) const {
 
 Tuple4 Sphere::normal_at(const Tuple4& world_point) const
 {
-    auto inverse = transform.inverse().value();
-    auto object_point = inverse * world_point;
+    auto object_point = transform_inverse * world_point;
     auto object_normal = object_point - make_point(0, 0, 0);
-    auto world_normal = inverse.transpose() * object_normal;
+    auto world_normal = transform_inverse_transpose * object_normal;
     world_normal.w() = 0;
     return world_normal.normalize();
 }

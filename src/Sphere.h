@@ -14,18 +14,21 @@ class Ray;
 class Sphere {
 private:
     TransformationMatrix transform;
+    TransformationMatrix transform_inverse;
+    TransformationMatrix transform_inverse_transpose;
     Material material;
 
 public:
-    Sphere()
-        : transform(make_identity<double, 4>())
-    { }
-    Sphere(const TransformationMatrix& transform)
-        : transform(transform)
-    { }
+    Sphere() {
+        set_transform(make_identity<double, 4>());
+    }
 
     const TransformationMatrix& get_transform() const { return transform; }
-    void set_transform(const TransformationMatrix& m) { transform = m; }
+    void set_transform(const TransformationMatrix& m) {
+        transform = m;
+        transform_inverse = transform.inverse().value();
+        transform_inverse_transpose = transform_inverse.transpose();
+    }
 
     const Material& get_material() const { return material; }
     void set_material(const Material& m) { material = m; }
