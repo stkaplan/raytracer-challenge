@@ -61,6 +61,23 @@ constexpr TransformationMatrix skew(double x_y, double x_z,
     }};
 }
 
+constexpr TransformationMatrix view_transform(
+        const Tuple4& from, const Tuple4& to, const Tuple4& up)
+{
+    auto forward = (to - from).normalize();
+    auto left = forward.cross_product(up.normalize());
+    auto true_up = left.cross_product(forward);
+
+    TransformationMatrix orientation = {{{0}}};
+    for (size_t i = 0; i < 3; ++i) {
+        orientation[0][i] = left[i];
+        orientation[1][i] = true_up[i];
+        orientation[2][i] = -forward[i];
+    }
+    orientation[3][3] = 1;
+    return orientation * translation(-from.x(), -from.y(), -from.z());
+}
+
 } // namespace raytracer
 
 #endif // _TRANSFORMATIONS_H_

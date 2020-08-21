@@ -222,3 +222,46 @@ TEST_CASE("Can use apply() to chain transformations")
                     .apply(translation(10, 5, 7));
     REQUIRE(transform * p == make_point(15, 0, 7));
 }
+
+TEST_CASE("Transformation matrix for default orientation")
+{
+    auto from = make_point(0, 0, 0);
+    auto to = make_point(0, 0, -1);
+    auto up = make_vector(0, 1, 0);
+    auto view = view_transform(from, to, up);
+    REQUIRE(view == make_identity<double, 4>());
+}
+
+TEST_CASE("View transformation looking in positive z direction")
+{
+    auto from = make_point(0, 0, 0);
+    auto to = make_point(0, 0, 1);
+    auto up = make_vector(0, 1, 0);
+    auto view = view_transform(from, to, up);
+    REQUIRE(view == scale(-1, 1, -1));
+}
+
+TEST_CASE("View transformation moves the world")
+{
+    auto from = make_point(0, 0, 8);
+    auto to = make_point(0, 0, 0);
+    auto up = make_vector(0, 1, 0);
+    auto view = view_transform(from, to, up);
+    REQUIRE(view == translation(0, 0, -8));
+}
+
+TEST_CASE("Arbitrary view transformation")
+{
+    auto from = make_point(1, 3, 2);
+    auto to = make_point(4, -2, 8);
+    auto up = make_vector(1, 1, 0);
+    auto view = view_transform(from, to, up);
+    Matrix<double, 4, 4> expected = {{
+        {-0.50709, 0.50709, 0.67612, -2.36643},
+        {0.76772, 0.60609, 0.12122, -2.82843},
+        {-0.35857, 0.59761, -0.71714, 0.0},
+        {0, 0, 0, 1},
+    }};
+
+    REQUIRE(view == expected);
+}
