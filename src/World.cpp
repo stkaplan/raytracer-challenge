@@ -1,5 +1,10 @@
 #include "World.h"
 
+#include "Color.h"
+#include "Intersection.h"
+
+#include <cassert>
+
 namespace raytracer {
 
 World World::default_world() {
@@ -37,4 +42,18 @@ std::vector<Intersection> World::intersect(const Ray& ray) const {
     return intersections;
 }
 
+Color World::shade_hit(const HitComputation& comp) const {
+    const Material& material = comp.get_intersection().get_object().get_material();
+    assert(light.has_value()); // TODO: What happens if there's no light?
+    return material.lighting(*light, comp.get_point(), comp.get_eye_vector(), comp.get_normal_vector());
+}
+
+Color World::color_at(const Ray& r) const {
+    auto intersections = intersect(r);
+    auto hit = find_hit(intersections);
+    if (!hit) return Color(0, 0, 0);
+
+    auto comp = hit->prepare_hit_computation(r);
+    return shade_hit(comp);
+}
 } // namespace raytracer

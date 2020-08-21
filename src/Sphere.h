@@ -34,6 +34,7 @@ public:
         transform_inverse_transpose = transform_inverse.transpose();
     }
 
+    Material& get_material() { return material; }
     const Material& get_material() const { return material; }
     void set_material(const Material& m) { material = m; }
 

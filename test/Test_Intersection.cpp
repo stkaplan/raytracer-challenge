@@ -1,6 +1,7 @@
 #include "catch.hpp"
 #include "Intersection.h"
 
+#include "Ray.h"
 #include "Sphere.h"
 
 using namespace raytracer;
@@ -61,4 +62,37 @@ TEST_CASE("Hit values is always the lowest non-negative intersection")
     auto hit = find_hit(xs);
     REQUIRE(hit.has_value());
     REQUIRE(hit == i4);
+}
+
+TEST_CASE("Pre-computing the state of an intersection")
+{
+    Ray r(make_point(0, 0, -5), make_vector(0, 0, 1));
+    Sphere s;
+    Intersection i(4, s);
+    auto comps = i.prepare_hit_computation(r);
+    REQUIRE(comps.get_intersection() == i);
+    REQUIRE(comps.get_point() == make_point(0, 0, -1));
+    REQUIRE(comps.get_eye_vector() == make_vector(0, 0, -1));
+    REQUIRE(comps.get_normal_vector() == make_vector(0, 0, -1));
+}
+
+TEST_CASE("The hit, when intersection occurs on the outside")
+{
+    Ray r(make_point(0, 0, -5), make_vector(0, 0, 1));
+    Sphere s;
+    Intersection i(4, s);
+    auto comps = i.prepare_hit_computation(r);
+    REQUIRE(!comps.is_inside());
+}
+
+TEST_CASE("The hit, when intersection occurs on the inside")
+{
+    Ray r(make_point(0, 0, 0), make_vector(0, 0, 1));
+    Sphere s;
+    Intersection i(1, s);
+    auto comps = i.prepare_hit_computation(r);
+    REQUIRE(comps.get_point() == make_point(0, 0, 1));
+    REQUIRE(comps.get_eye_vector() == make_vector(0, 0, -1));
+    REQUIRE(comps.is_inside());
+    REQUIRE(comps.get_normal_vector() == make_vector(0, 0, -1));
 }

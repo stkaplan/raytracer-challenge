@@ -54,3 +54,56 @@ TEST_CASE("Intersect world with a ray")
         REQUIRE(expected[i] == results[i].get_t());
     }
 }
+
+TEST_CASE("Shading an intersection")
+{
+    World w = World::default_world();
+    Ray r(make_point(0, 0, -5), make_vector(0, 0, 1));
+    const Sphere& s = w.get_object(0);
+    Intersection i(4, s);
+    HitComputation comp = i.prepare_hit_computation(r);
+    Color c = w.shade_hit(comp);
+    REQUIRE(c == make_color(0.38066, 0.47583, 0.2855));
+}
+
+TEST_CASE("Shading an intersection from the inside")
+{
+    World w = World::default_world();
+    PointLight light(make_point(0, 0.25, 0), make_color(1, 1, 1));
+    w.set_light(light);
+
+    Ray r(make_point(0, 0, 0), make_vector(0, 0, 1));
+    const Sphere& s = w.get_object(1);
+    Intersection i(0.5, s);
+    HitComputation comp = i.prepare_hit_computation(r);
+    Color c = w.shade_hit(comp);
+    REQUIRE(c == make_color(0.90498, 0.90498, 0.90498));
+}
+
+TEST_CASE("Color when ray misses")
+{
+    World w = World::default_world();
+    Ray r(make_point(0, 0, -5), make_vector(0, 1, 0));
+    Color c = w.color_at(r);
+    REQUIRE(c == make_color(0, 0, 0));
+}
+
+TEST_CASE("Color when ray hits")
+{
+    World w = World::default_world();
+    Ray r(make_point(0, 0, -5), make_vector(0, 0, 1));
+    Color c = w.color_at(r);
+    REQUIRE(c == make_color(0.38066, 0.47583, 0.2855));
+}
+
+TEST_CASE("Color with intersection behind ray")
+{
+    World w = World::default_world();
+    Sphere& outer = w.get_object(0);
+    outer.get_material().set_ambient(1);
+    Sphere& inner = w.get_object(1);
+    inner.get_material().set_ambient(1);
+    Ray r(make_point(0, 0, 0.75), make_vector(0, 0, -1));
+    Color c = w.color_at(r);
+    REQUIRE(c == inner.get_material().get_color());
+}

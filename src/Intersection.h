@@ -2,6 +2,7 @@
 #define _INTERSECTION_H_
 
 #include "common.h"
+#include "Tuple.h"
 
 #include <optional>
 #include <ostream>
@@ -9,6 +10,8 @@
 
 namespace raytracer {
 
+class HitComputation;
+class Ray;
 class Sphere;
 
 class Intersection {
@@ -36,6 +39,31 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const Intersection& i) {
         return os << "Intersection(" << i.t << ", " << i.object << ")";
     }
+
+    HitComputation prepare_hit_computation(const Ray& ray);
+};
+
+class HitComputation {
+    private:
+        Intersection intersection;
+        Tuple4 point;
+        Tuple4 eye_vector;
+        Tuple4 normal_vector;
+        bool inside;
+
+    public:
+        HitComputation(const Intersection& intersection, Tuple4 point,
+                       Tuple4 eye_vector, Tuple4 normal_vector, bool inside)
+            : intersection(intersection), point(point),
+              eye_vector(eye_vector), normal_vector(normal_vector),
+              inside(inside)
+        { }
+
+        const Intersection& get_intersection() const { return intersection; }
+        const Tuple4& get_point() const { return point; }
+        const Tuple4& get_eye_vector() const { return eye_vector; }
+        const Tuple4& get_normal_vector() const { return normal_vector; }
+        bool is_inside() const { return inside; }
 };
 
 // Returns intersection with smallest non-negative t.
