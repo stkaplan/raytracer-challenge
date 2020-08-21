@@ -26,6 +26,7 @@ TEST_CASE("Default world")
     m1.set_color(make_color(0.8, 1.0, 0.6));
     m1.set_diffuse(0.7);
     m1.set_specular(0.2);
+    s1.set_material(m1);
 
     Sphere s2;
     s2.set_transform(scale(0.5, 0.5, 0.5));

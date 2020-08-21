@@ -3,6 +3,7 @@
 
 #include "Color.h"
 
+#include "ostream"
 
 namespace raytracer {
 
@@ -29,6 +30,11 @@ public:
     { }
 
     bool operator==(const Material& other) const = default;
+
+    friend std::ostream& operator<<(std::ostream& os, const Material& m) {
+        return os << "Material(" << m.color << ", "<< m.ambient << ", "
+            << m.diffuse << ", " << m.specular << ", " << m.shininess << ")";
+    }
 
     const Color& get_color() const { return color; }
     void set_color(const Color& c) { color = c; }

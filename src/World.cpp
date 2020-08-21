@@ -11,6 +11,7 @@ World World::default_world() {
     m1.set_color(make_color(0.8, 1.0, 0.6));
     m1.set_diffuse(0.7);
     m1.set_specular(0.2);
+    s1.set_material(m1);
     w.add_object(s1);
 
     Sphere s2;

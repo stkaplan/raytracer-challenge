@@ -34,7 +34,7 @@ public:
     }
 
     friend std::ostream& operator<<(std::ostream& os, const Intersection& i) {
-        return os << "Intersection(" << i.t << ", " << i.object << ")\n";
+        return os << "Intersection(" << i.t << ", " << i.object << ")";
     }
 };
 
