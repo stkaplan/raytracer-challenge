@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 project(raytracer-challenge)
 
 set(TEST_PROGS
+    Test_Camera
     Test_Canvas
     Test_Color
     Test_Intersection
