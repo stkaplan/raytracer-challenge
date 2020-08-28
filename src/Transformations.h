@@ -61,7 +61,8 @@ constexpr TransformationMatrix skew(double x_y, double x_z,
     }};
 }
 
-constexpr TransformationMatrix view_transform(
+// Can't be constexpr because of normalize()
+inline TransformationMatrix view_transform(
         const Tuple4& from, const Tuple4& to, const Tuple4& up)
 {
     auto forward = (to - from).normalize();

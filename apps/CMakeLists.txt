@@ -5,6 +5,7 @@ set(APPS
     cannon
     clock
     sphere
+    scene_ch7
 )
 foreach(app ${APPS})
     add_executable(${app} ${app}/main.cpp)
