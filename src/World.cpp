@@ -47,7 +47,8 @@ std::vector<Intersection> World::intersect(const Ray& ray) const {
 Color World::shade_hit(const HitComputation& comp) const {
     const Material& material = comp.get_intersection().get_object().get_material();
     assert(light.has_value()); // TODO: What happens if there's no light?
-    return material.lighting(*light, comp.get_point(), comp.get_eye_vector(), comp.get_normal_vector(), false);
+    return material.lighting(*light, comp.get_point(), comp.get_eye_vector(),
+            comp.get_normal_vector(), is_shadowed(comp.get_over_point()));
 }
 
 Color World::color_at(const Ray& r) const {

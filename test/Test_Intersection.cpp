@@ -96,3 +96,14 @@ TEST_CASE("The hit, when intersection occurs on the inside")
     REQUIRE(comps.is_inside());
     REQUIRE(comps.get_normal_vector() == make_vector(0, 0, -1));
 }
+
+TEST_CASE("The hit should offset the point")
+{
+    Ray r(make_point(0, 0, -5), make_vector(0, 0, 1));
+    Sphere s;
+    s.set_transform(translation(0, 0, 1));
+    Intersection i(5, s);
+    auto comps = i.prepare_hit_computation(r);
+    REQUIRE(comps.get_over_point().z() < -detail::EPSILON / 2.0);
+    REQUIRE(comps.get_point().z() > comps.get_over_point().z());
+}

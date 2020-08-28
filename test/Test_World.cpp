@@ -80,6 +80,26 @@ TEST_CASE("Shading an intersection from the inside")
     REQUIRE(c == make_color(0.90498, 0.90498, 0.90498));
 }
 
+TEST_CASE("shade_hit is given an intersection in shadow")
+{
+    World w;
+    w.set_light(PointLight(make_point(0, 0, -10), make_color(1, 1, 1)));
+
+    Sphere s1;
+    w.add_object(s1);
+
+    Sphere s2;
+    s2.set_transform(translation(0, 0, 10));
+    w.add_object(s2);
+
+    Ray r(make_point(0, 0, 5), make_vector(0, 0, 1));
+    Intersection i(4, s2);
+
+    auto comps = i.prepare_hit_computation(r);
+    auto color = w.shade_hit(comps);
+    REQUIRE(color == make_color(0.1, 0.1, 0.1));
+}
+
 TEST_CASE("Color when ray misses")
 {
     World w = World::default_world();

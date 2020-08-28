@@ -51,18 +51,22 @@ class HitComputation {
         Tuple4 normal_vector;
         bool inside;
 
+        Tuple4 over_point;
     public:
         HitComputation(const Intersection& intersection, Tuple4 point,
                        Tuple4 eye_vector, Tuple4 normal_vector, bool inside)
             : intersection(intersection), point(point),
               eye_vector(eye_vector), normal_vector(normal_vector),
               inside(inside)
-        { }
+        {
+            over_point = point + normal_vector * detail::EPSILON;
+        }
 
         const Intersection& get_intersection() const { return intersection; }
         const Tuple4& get_point() const { return point; }
         const Tuple4& get_eye_vector() const { return eye_vector; }
         const Tuple4& get_normal_vector() const { return normal_vector; }
+        const Tuple4& get_over_point() const { return over_point; }
         bool is_inside() const { return inside; }
 };
 
