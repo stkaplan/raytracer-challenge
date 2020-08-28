@@ -43,7 +43,7 @@ TEST_CASE("Lighting with eye between light and surface")
     auto eye = make_vector(0, 0, -1);
     auto normal = make_vector(0, 0, -1);
     PointLight light(make_point(0, 0, -10), make_color(1, 1, 1));
-    auto result = m.lighting(light, pos, eye, normal);
+    auto result = m.lighting(light, pos, eye, normal, false);
     REQUIRE(result == make_color(1.9, 1.9, 1.9));
 }
 
@@ -54,7 +54,7 @@ TEST_CASE("Lighting with eye between light and surface, eye offset 45 degrees")
     auto eye = make_vector(0, std::sqrt(2.0)/2.0, -std::sqrt(2.0)/2.0);
     auto normal = make_vector(0, 0, -1);
     PointLight light(make_point(0, 0, -10), make_color(1, 1, 1));
-    auto result = m.lighting(light, pos, eye, normal);
+    auto result = m.lighting(light, pos, eye, normal, false);
     REQUIRE(result == make_color(1.0, 1.0, 1.0));
 }
 
@@ -65,7 +65,7 @@ TEST_CASE("Lighting with eye opposite surface, light offset 45 degrees")
     auto eye = make_vector(0, 0, -1);
     auto normal = make_vector(0, 0, -1);
     PointLight light(make_point(0, 10, -10), make_color(1, 1, 1));
-    auto result = m.lighting(light, pos, eye, normal);
+    auto result = m.lighting(light, pos, eye, normal, false);
     REQUIRE(result == make_color(0.7364, 0.7364, 0.7364));
 }
 
@@ -76,7 +76,7 @@ TEST_CASE("Lighting with eye in path of reflection vcetor")
     auto eye = make_vector(0, -std::sqrt(2.0)/2.0, -std::sqrt(2.0)/2.0);
     auto normal = make_vector(0, 0, -1);
     PointLight light(make_point(0, 10, -10), make_color(1, 1, 1));
-    auto result = m.lighting(light, pos, eye, normal);
+    auto result = m.lighting(light, pos, eye, normal, false);
     REQUIRE(result == make_color(1.6364, 1.6364, 1.6364));
 }
 
@@ -87,6 +87,18 @@ TEST_CASE("Lighting with light behind surface")
     auto eye = make_vector(0, 0, -1);
     auto normal = make_vector(0, 0, -1);
     PointLight light(make_point(0, 0, 10), make_color(1, 1, 1));
-    auto result = m.lighting(light, pos, eye, normal);
+    auto result = m.lighting(light, pos, eye, normal, false);
+    REQUIRE(result == make_color(0.1, 0.1, 0.1));
+}
+
+TEST_CASE("Lighting with surface in shadow")
+{
+    Material m;
+    auto pos = make_point(0, 0, 0);
+    auto eye = make_vector(0, 0, -1);
+    auto normal = make_vector(0, 0, -1);
+    PointLight light(make_point(0, 0, -10), make_color(1, 1, 1));
+    bool in_shadow = true;
+    auto result = m.lighting(light, pos, eye, normal, in_shadow);
     REQUIRE(result == make_color(0.1, 0.1, 0.1));
 }

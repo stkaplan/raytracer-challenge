@@ -2,6 +2,8 @@
 
 #include "Color.h"
 #include "Intersection.h"
+#include "Ray.h"
+#include "Tuple.h"
 
 #include <cassert>
 
@@ -45,7 +47,7 @@ std::vector<Intersection> World::intersect(const Ray& ray) const {
 Color World::shade_hit(const HitComputation& comp) const {
     const Material& material = comp.get_intersection().get_object().get_material();
     assert(light.has_value()); // TODO: What happens if there's no light?
-    return material.lighting(*light, comp.get_point(), comp.get_eye_vector(), comp.get_normal_vector());
+    return material.lighting(*light, comp.get_point(), comp.get_eye_vector(), comp.get_normal_vector(), false);
 }
 
 Color World::color_at(const Ray& r) const {
@@ -55,5 +57,15 @@ Color World::color_at(const Ray& r) const {
 
     auto comp = hit->prepare_hit_computation(r);
     return shade_hit(comp);
+}
+
+bool World::is_shadowed(const Tuple4& point) const {
+    if (!light.has_value()) return false;
+
+    auto vector = light->get_position() - point;
+    Ray ray(point, vector.normalize());
+
+    auto hit = find_hit(intersect(ray));
+    return hit && hit->get_t() < vector.magnitude();
 }
 } // namespace raytracer

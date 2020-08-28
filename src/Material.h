@@ -60,7 +60,8 @@ public:
     Color lighting(const PointLight& light,
                    const Tuple4& position,
                    const Tuple4& eye_vector,
-                   const Tuple4& normal_vector) const;
+                   const Tuple4& normal_vector,
+                   bool in_shadow) const;
 };
 
 } // namespace raytracer

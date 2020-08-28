@@ -107,3 +107,31 @@ TEST_CASE("Color with intersection behind ray")
     Color c = w.color_at(r);
     REQUIRE(c == inner.get_material().get_color());
 }
+
+TEST_CASE("There is no shadow when nothing is collinear with point and light")
+{
+    World w = World::default_world();
+    auto p = make_point(0, 10, 0);
+    REQUIRE(!w.is_shadowed(p));
+}
+
+TEST_CASE("There is shadow when an object is between point and light")
+{
+    World w = World::default_world();
+    auto p = make_point(10, -10, 10);
+    REQUIRE(w.is_shadowed(p));
+}
+
+TEST_CASE("There is no shadow when object is behind light")
+{
+    World w = World::default_world();
+    auto p = make_point(-20, 20, -20);
+    REQUIRE(!w.is_shadowed(p));
+}
+
+TEST_CASE("There is no shadow when object is behind point")
+{
+    World w = World::default_world();
+    auto p = make_point(-2, 2, -2);
+    REQUIRE(!w.is_shadowed(p));
+}

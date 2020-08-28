@@ -10,13 +10,16 @@ namespace raytracer {
 Color Material::lighting(const PointLight& light,
                          const Tuple4& position,
                          const Tuple4& eye_vector,
-                         const Tuple4& normal_vector) const
+                         const Tuple4& normal_vector,
+                         bool in_shadow) const
 {
     auto effective_color = color * light.get_intensity();
     auto light_vector = (light.get_position() - position).normalize();
     auto ambient_color = effective_color * ambient;
-    Color black(0, 0, 0);
 
+    if (in_shadow) return ambient_color;
+
+    Color black(0, 0, 0);
     auto diffuse_color = black;
     auto specular_color = black;
 

@@ -36,6 +36,7 @@ public:
     std::vector<Intersection> intersect(const Ray& ray) const;
     Color shade_hit(const HitComputation& comp) const;
     Color color_at(const Ray& r) const;
+    bool is_shadowed(const Tuple4& point) const;
 };
 
 } // namespace raytracer

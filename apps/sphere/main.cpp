@@ -42,7 +42,7 @@ int main()
                 auto hit_position = ray.position(hit->get_t());
                 auto eye = -ray.get_direction();
                 auto normal = hit->get_object().normal_at(hit_position);
-                auto color = hit->get_object().get_material().lighting(light, hit_position, eye, normal);
+                auto color = hit->get_object().get_material().lighting(light, hit_position, eye, normal, false);
                 canvas.at(x, y) = color;
             }
         }
