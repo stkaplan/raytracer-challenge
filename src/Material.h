@@ -18,9 +18,15 @@ private:
     double shininess;
 
 public:
+    static constexpr double DEFAULT_AMBIENT = 0.1;
+    static constexpr double DEFAULT_DIFFUSE = 0.9;
+    static constexpr double DEFAULT_SPECULAR = 0.9;
+    static constexpr double DEFAULT_SHININESS = 200.0;
+
     Material()
-        : color(make_color(1, 1, 1)), ambient(0.1), diffuse(0.9),
-          specular(0.9), shininess(200.0)
+        : color(make_color(1, 1, 1)), ambient(DEFAULT_AMBIENT),
+          diffuse(DEFAULT_DIFFUSE), specular(DEFAULT_SPECULAR),
+          shininess(DEFAULT_SHININESS)
     { }
 
     Material(const Color& color, double ambient, double diffuse,
