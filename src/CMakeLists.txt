@@ -15,6 +15,8 @@ add_library(raytracer SHARED
     Matrix.h
     PointLight.h
     Ray.h
+    Shape.cpp
+    Shape.h
     Sphere.cpp
     Sphere.h
     Transformations.h

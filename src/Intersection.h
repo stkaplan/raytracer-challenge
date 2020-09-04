@@ -12,15 +12,15 @@ namespace raytracer {
 
 class HitComputation;
 class Ray;
-class Sphere;
+class Shape;
 
 class Intersection {
 private:
     double t; // Distance of intersection
-    const Sphere* object; // Non-owning pointer
+    const Shape* object; // Non-owning pointer
 
 public:
-    Intersection(double t, const Sphere& object)
+    Intersection(double t, const Shape& object)
         : t(t), object(&object)
     { }
 
@@ -29,7 +29,7 @@ public:
     Intersection& operator=(const Intersection& other) = default;
 
     double get_t() const { return t; }
-    const Sphere& get_object() const { return *object; }
+    const Shape& get_object() const { return *object; }
 
     bool operator==(const Intersection& other) const {
         return float_equals(t, other.t)

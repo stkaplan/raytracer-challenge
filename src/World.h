@@ -4,9 +4,10 @@
 #include "Color.h"
 #include "Intersection.h"
 #include "PointLight.h"
-#include "Sphere.h"
+#include "Shape.h"
 
 #include <algorithm>
+#include <memory>
 #include <optional>
 #include <vector>
 
@@ -17,7 +18,7 @@ class Ray;
 class World {
 private:
     std::optional<PointLight> light;
-    std::vector<Sphere> objects;
+    std::vector<std::unique_ptr<Shape>> objects;
 
 public:
     World() { }
@@ -27,11 +28,11 @@ public:
     void set_light(const PointLight& l) { light = l; }
 
     auto num_objects() const { return objects.size(); }
-    auto& get_object(size_t i) { return objects[i]; }
-    auto& get_object(size_t i) const { return objects[i]; }
+    auto& get_object(size_t i) { return *objects[i]; }
+    auto& get_object(size_t i) const { return *objects[i]; }
     auto begin_objects() const { return objects.begin(); }
     auto end_objects() const { return objects.end(); }
-    void add_object(const Sphere& s) { objects.push_back(s); }
+    void add_object(std::unique_ptr<Shape> s) { objects.push_back(std::move(s)); }
 
     std::vector<Intersection> intersect(const Ray& ray) const;
     Color shade_hit(const HitComputation& comp) const;

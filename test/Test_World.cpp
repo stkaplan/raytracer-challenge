@@ -3,6 +3,7 @@
 
 #include "PointLight.h"
 #include "Ray.h"
+#include "Sphere.h"
 
 using namespace raytracer;
 
@@ -26,18 +27,18 @@ TEST_CASE("Default world")
     m1.set_color(make_color(0.8, 1.0, 0.6));
     m1.set_diffuse(0.7);
     m1.set_specular(0.2);
-    s1.set_material(m1);
+    s1.set_material(std::move(m1));
 
     Sphere s2;
     s2.set_transform(scale(0.5, 0.5, 0.5));
 
     auto it = w.begin_objects();
     REQUIRE(it != w.end_objects());
-    REQUIRE(*it == s1);
+    REQUIRE(**it == s1);
 
     ++it;
     REQUIRE(it != w.end_objects());
-    REQUIRE(*it == s2);
+    REQUIRE(**it == s2);
 
     ++it;
     REQUIRE(it == w.end_objects());
@@ -59,7 +60,7 @@ TEST_CASE("Shading an intersection")
 {
     World w = World::default_world();
     Ray r(make_point(0, 0, -5), make_vector(0, 0, 1));
-    const Sphere& s = w.get_object(0);
+    const Shape& s = w.get_object(0);
     Intersection i(4, s);
     HitComputation comp = i.prepare_hit_computation(r);
     Color c = w.shade_hit(comp);
@@ -73,7 +74,7 @@ TEST_CASE("Shading an intersection from the inside")
     w.set_light(light);
 
     Ray r(make_point(0, 0, 0), make_vector(0, 0, 1));
-    const Sphere& s = w.get_object(1);
+    const Shape& s = w.get_object(1);
     Intersection i(0.5, s);
     HitComputation comp = i.prepare_hit_computation(r);
     Color c = w.shade_hit(comp);
@@ -85,15 +86,14 @@ TEST_CASE("shade_hit is given an intersection in shadow")
     World w;
     w.set_light(PointLight(make_point(0, 0, -10), make_color(1, 1, 1)));
 
-    Sphere s1;
-    w.add_object(s1);
+    auto s1 = std::make_unique<Sphere>();
+    w.add_object(std::move(s1));
 
-    Sphere s2;
-    s2.set_transform(translation(0, 0, 10));
-    w.add_object(s2);
-
+    auto s2 = std::make_unique<Sphere>();
+    s2->set_transform(translation(0, 0, 10));
     Ray r(make_point(0, 0, 5), make_vector(0, 0, 1));
-    Intersection i(4, s2);
+    Intersection i(4, *s2);
+    w.add_object(std::move(s2));
 
     auto comps = i.prepare_hit_computation(r);
     auto color = w.shade_hit(comps);
@@ -119,9 +119,9 @@ TEST_CASE("Color when ray hits")
 TEST_CASE("Color with intersection behind ray")
 {
     World w = World::default_world();
-    Sphere& outer = w.get_object(0);
+    Shape& outer = w.get_object(0);
     outer.get_material().set_ambient(1);
-    Sphere& inner = w.get_object(1);
+    Shape& inner = w.get_object(1);
     inner.get_material().set_ambient(1);
     Ray r(make_point(0, 0, 0.75), make_vector(0, 0, -1));
     Color c = w.color_at(r);

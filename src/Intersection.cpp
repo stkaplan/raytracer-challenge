@@ -1,7 +1,7 @@
 #include "Intersection.h"
 
 #include "Ray.h"
-#include "Sphere.h"
+#include "Shape.h"
 
 #include <optional>
 #include <vector>

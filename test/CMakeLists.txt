@@ -10,6 +10,7 @@ set(TEST_PROGS
     Test_Matrix
     Test_PointLight
     Test_Ray
+    Test_Shape
     Test_Sphere
     Test_Transformations
     Test_Tuple
