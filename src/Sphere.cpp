@@ -2,6 +2,7 @@
 
 #include "Intersection.h"
 #include "Ray.h"
+#include "Tuple.h"
 
 #include <cassert>
 #include <cmath>

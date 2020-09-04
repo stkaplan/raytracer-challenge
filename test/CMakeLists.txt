@@ -8,6 +8,7 @@ set(TEST_PROGS
     Test_Intersection
     Test_Material
     Test_Matrix
+    Test_Plane
     Test_PointLight
     Test_Ray
     Test_Shape

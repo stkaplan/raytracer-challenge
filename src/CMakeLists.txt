@@ -13,6 +13,8 @@ add_library(raytracer SHARED
     Material.cpp
     Material.h
     Matrix.h
+    Plane.h
+    Plane.cpp
     PointLight.h
     Ray.h
     Shape.cpp
