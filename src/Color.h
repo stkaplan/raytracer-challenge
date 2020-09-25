@@ -45,7 +45,13 @@ public:
         os << "Color(" << c.r() << ", " << c.g() << ", " << c.b() << ")";
         return os;
     }
+
+    static const Color BLACK;
+    static const Color WHITE;
 };
+
+constexpr Color Color::BLACK(0, 0, 0);
+constexpr Color Color::WHITE(1, 1, 1);
 
 constexpr Color make_color(Color::element_type r, Color::element_type g, Color::element_type b) {
     return Color(r, g, b);

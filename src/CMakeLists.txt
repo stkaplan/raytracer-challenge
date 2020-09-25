@@ -13,14 +13,18 @@ add_library(raytracer SHARED
     Material.cpp
     Material.h
     Matrix.h
-    Plane.h
+    Pattern.cpp
+    Pattern.h
     Plane.cpp
+    Plane.h
     PointLight.h
     Ray.h
     Shape.cpp
     Shape.h
     Sphere.cpp
     Sphere.h
+    StripePattern.cpp
+    StripePattern.h
     Transformations.h
     Tuple.h
     World.cpp

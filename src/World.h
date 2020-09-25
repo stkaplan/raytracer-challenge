@@ -29,7 +29,7 @@ public:
 
     auto num_objects() const { return objects.size(); }
     auto& get_object(size_t i) { return *objects[i]; }
-    auto& get_object(size_t i) const { return *objects[i]; }
+    const auto& get_object(size_t i) const { return *objects[i]; }
     auto begin_objects() const { return objects.begin(); }
     auto end_objects() const { return objects.end(); }
     void add_object(std::unique_ptr<Shape> s) { objects.push_back(std::move(s)); }
