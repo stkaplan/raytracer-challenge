@@ -13,6 +13,10 @@ class StripePattern : public Pattern {
 private:
     std::vector<Color> colors;
 
+    bool isEqual(const Pattern& other) const override {
+        return colors == static_cast<const StripePattern&>(other).colors;
+    }
+
 public:
     StripePattern()
         : colors{Color::WHITE, Color::BLACK}

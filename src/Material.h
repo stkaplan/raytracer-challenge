@@ -3,10 +3,12 @@
 
 #include "Color.h"
 
-#include "ostream"
+#include <memory>
+#include <ostream>
 
 namespace raytracer {
 
+class Pattern;
 class PointLight;
 
 class Material {
@@ -16,6 +18,7 @@ private:
     double diffuse;
     double specular;
     double shininess;
+    std::shared_ptr<Pattern> pattern;
 
 public:
     static constexpr double DEFAULT_AMBIENT = 0.1;
@@ -30,9 +33,10 @@ public:
     { }
 
     Material(const Color& color, double ambient, double diffuse,
-             double specular, double shininess)
+             double specular, double shininess,
+             std::shared_ptr<Pattern> pattern = nullptr)
         : color(color), ambient(ambient), diffuse(diffuse),
-          specular(specular), shininess(shininess)
+          specular(specular), shininess(shininess), pattern(pattern)
     { }
 
     bool operator==(const Material& other) const = default;
@@ -56,6 +60,9 @@ public:
 
     double get_shininess() const { return shininess; }
     void set_shininess(double val) { shininess = val; }
+
+    std::shared_ptr<Pattern> get_pattern() const { return pattern; }
+    void set_pattern(const std::shared_ptr<Pattern> p) { pattern = p; }
 
     Color lighting(const PointLight& light,
                    const Tuple4& position,

@@ -1,6 +1,7 @@
 #include "Material.h"
 
 #include "Color.h"
+#include "Pattern.h"
 #include "PointLight.h"
 
 #include <cmath>
@@ -13,7 +14,9 @@ Color Material::lighting(const PointLight& light,
                          const Tuple4& normal_vector,
                          bool in_shadow) const
 {
-    auto effective_color = color * light.get_intensity();
+    Color point_color = pattern ? pattern->color_at(position) : color;
+
+    auto effective_color = point_color * light.get_intensity();
     auto light_vector = (light.get_position() - position).normalize();
     auto ambient_color = effective_color * ambient;
 

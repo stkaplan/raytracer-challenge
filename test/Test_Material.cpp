@@ -3,6 +3,7 @@
 
 #include "Color.h"
 #include "PointLight.h"
+#include "StripePattern.h"
 #include "Tuple.h"
 
 using namespace raytracer;
@@ -101,4 +102,17 @@ TEST_CASE("Lighting with surface in shadow")
     bool in_shadow = true;
     auto result = m.lighting(light, pos, eye, normal, in_shadow);
     REQUIRE(result == make_color(0.1, 0.1, 0.1));
+}
+
+TEST_CASE("Lighting with a pattern applied")
+{
+    auto pattern = std::make_shared<StripePattern>();
+    Material m(make_color(1, 1, 1), 1.0, 0.0, 0.0, Material::DEFAULT_SHININESS, pattern);
+    auto eye_vector = make_vector(0, 0, -1);
+    auto normal_vector = make_vector(0, 0, -1);
+    PointLight light(make_point(0, 0, -10), make_color(1, 1, 1));
+    auto c1 = m.lighting(light, make_point(0.9, 0, 0), eye_vector, normal_vector, false);
+    auto c2 = m.lighting(light, make_point(1.1, 0, 0), eye_vector, normal_vector, false);
+    REQUIRE(c1 == make_color(1, 1, 1));
+    REQUIRE(c2 == make_color(0, 0, 0));
 }
