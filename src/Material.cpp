@@ -8,13 +8,14 @@
 
 namespace raytracer {
 
-Color Material::lighting(const PointLight& light,
+Color Material::lighting(const Shape& object,
+                         const PointLight& light,
                          const Tuple4& position,
                          const Tuple4& eye_vector,
                          const Tuple4& normal_vector,
                          bool in_shadow) const
 {
-    Color point_color = pattern ? pattern->color_at(position) : color;
+    Color point_color = pattern ? pattern->color_at_object(object, position) : color;
 
     auto effective_color = point_color * light.get_intensity();
     auto light_vector = (light.get_position() - position).normalize();

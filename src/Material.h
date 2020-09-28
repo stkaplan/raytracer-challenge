@@ -10,6 +10,7 @@ namespace raytracer {
 
 class Pattern;
 class PointLight;
+class Shape;
 
 class Material {
 private:
@@ -64,7 +65,8 @@ public:
     std::shared_ptr<Pattern> get_pattern() const { return pattern; }
     void set_pattern(const std::shared_ptr<Pattern> p) { pattern = p; }
 
-    Color lighting(const PointLight& light,
+    Color lighting(const Shape& object,
+                   const PointLight& light,
                    const Tuple4& position,
                    const Tuple4& eye_vector,
                    const Tuple4& normal_vector,

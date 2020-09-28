@@ -1,5 +1,6 @@
 #include "catch.hpp"
 #include "Pattern.h"
+#include "Sphere.h"
 
 #include "StripePattern.h"
 
@@ -39,4 +40,35 @@ TEST_CASE("A stripe pattern alternates in x")
     REQUIRE(pattern.color_at(make_point(-0.1, 0, 0)) == Color::BLACK);
     REQUIRE(pattern.color_at(make_point(-1, 0, 0)) == Color::BLACK);
     REQUIRE(pattern.color_at(make_point(-1.1, 0, 0)) == Color::WHITE);
+}
+
+TEST_CASE("Stripes with object transform")
+{
+    Sphere s;
+    s.set_transform(scale(2, 2, 2));
+
+    StripePattern p;
+
+    REQUIRE(p.color_at_object(s, make_point(1.5, 0, 0)) == Color::WHITE);
+}
+
+TEST_CASE("Stripes with pattern transform")
+{
+    Sphere s;
+
+    StripePattern p;
+    p.set_transform(scale(2, 2, 2));
+
+    REQUIRE(p.color_at_object(s, make_point(1.5, 0, 0)) == Color::WHITE);
+}
+
+TEST_CASE("Stripes with both object and pattern transform")
+{
+    Sphere s;
+    s.set_transform(scale(2, 2, 2));
+
+    StripePattern p;
+    p.set_transform(translation(0.5, 0, 0));
+
+    REQUIRE(p.color_at_object(s, make_point(2.5, 0, 0)) == Color::WHITE);
 }
