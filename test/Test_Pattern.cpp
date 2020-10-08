@@ -2,9 +2,65 @@
 #include "Pattern.h"
 #include "Sphere.h"
 
+#include "Test_Pattern.h"
 #include "StripePattern.h"
 
+#include "Color.h"
+#include "Transformations.h"
+
 using namespace raytracer;
+
+TEST_CASE("Default pattern transformation")
+{
+    TestPattern pattern;
+    REQUIRE(pattern.get_transform() == make_identity<double, 4>());
+}
+
+TEST_CASE("Assigning a transformation")
+{
+    TestPattern pattern;
+    TransformationMatrix transform = translation(1, 2, 3);
+    pattern.set_transform(transform);
+    REQUIRE(pattern.get_transform() == transform);
+    REQUIRE(pattern.get_transform_inverse() == transform.inverse().value());
+}
+
+TEST_CASE("Pattern with object transformation")
+{
+    Sphere sphere;
+    sphere.set_transform(scale(2, 2, 2));
+
+    TestPattern pattern;
+
+    auto color = make_color(1, 1.5, 2);
+    auto point = make_point(2, 3, 4);
+    REQUIRE(pattern.color_at_object(sphere, point) == color);
+}
+
+TEST_CASE("Pattern with pattern transformation")
+{
+    Sphere sphere;
+
+    TestPattern pattern;
+    pattern.set_transform(scale(2, 2, 2));
+
+    auto color = make_color(1, 1.5, 2);
+    auto point = make_point(2, 3, 4);
+    REQUIRE(pattern.color_at_object(sphere, point) == color);
+}
+
+TEST_CASE("Pattern with both object and pattern transformation")
+{
+    Sphere sphere;
+    sphere.set_transform(scale(2, 2, 2));
+
+    TestPattern pattern;
+    pattern.set_transform(translation(0.5, 1, 1.5));
+
+    auto color = make_color(0.75, 0.5, 0.25);
+    auto point = make_point(2.5, 3, 3.5);
+    REQUIRE(pattern.color_at_object(sphere, point) == color);
+}
 
 TEST_CASE("Creating a stripe pattern")
 {
@@ -40,35 +96,4 @@ TEST_CASE("A stripe pattern alternates in x")
     REQUIRE(pattern.color_at(make_point(-0.1, 0, 0)) == Color::BLACK);
     REQUIRE(pattern.color_at(make_point(-1, 0, 0)) == Color::BLACK);
     REQUIRE(pattern.color_at(make_point(-1.1, 0, 0)) == Color::WHITE);
-}
-
-TEST_CASE("Stripes with object transform")
-{
-    Sphere s;
-    s.set_transform(scale(2, 2, 2));
-
-    StripePattern p;
-
-    REQUIRE(p.color_at_object(s, make_point(1.5, 0, 0)) == Color::WHITE);
-}
-
-TEST_CASE("Stripes with pattern transform")
-{
-    Sphere s;
-
-    StripePattern p;
-    p.set_transform(scale(2, 2, 2));
-
-    REQUIRE(p.color_at_object(s, make_point(1.5, 0, 0)) == Color::WHITE);
-}
-
-TEST_CASE("Stripes with both object and pattern transform")
-{
-    Sphere s;
-    s.set_transform(scale(2, 2, 2));
-
-    StripePattern p;
-    p.set_transform(translation(0.5, 0, 0));
-
-    REQUIRE(p.color_at_object(s, make_point(2.5, 0, 0)) == Color::WHITE);
 }
