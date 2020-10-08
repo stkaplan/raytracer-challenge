@@ -8,6 +8,8 @@ add_library(raytracer SHARED
     Canvas.cpp
     Canvas.h
     Color.h
+    GradientPattern.cpp
+    GradientPattern.h
     Intersection.cpp
     Intersection.h
     Material.cpp

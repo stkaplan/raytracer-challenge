@@ -3,6 +3,7 @@
 #include "Sphere.h"
 
 #include "Test_Pattern.h"
+#include "GradientPattern.h"
 #include "StripePattern.h"
 
 #include "Color.h"
@@ -71,7 +72,7 @@ TEST_CASE("Creating a stripe pattern")
     REQUIRE(colors[1] == Color::BLACK);
 }
 
-TEST_CASE("A stripe pattern is constant in y")
+TEST_CASE("Stripe pattern is constant in y")
 {
     const StripePattern pattern;
     REQUIRE(pattern.color_at(make_point(0, 0, 0)) == Color::WHITE);
@@ -79,7 +80,7 @@ TEST_CASE("A stripe pattern is constant in y")
     REQUIRE(pattern.color_at(make_point(0, 2, 0)) == Color::WHITE);
 }
 
-TEST_CASE("A stripe pattern is constant in z")
+TEST_CASE("Stripe pattern is constant in z")
 {
     const StripePattern pattern;
     REQUIRE(pattern.color_at(make_point(0, 0, 0)) == Color::WHITE);
@@ -87,7 +88,7 @@ TEST_CASE("A stripe pattern is constant in z")
     REQUIRE(pattern.color_at(make_point(0, 0, 2)) == Color::WHITE);
 }
 
-TEST_CASE("A stripe pattern alternates in x")
+TEST_CASE("Stripe pattern alternates in x")
 {
     const StripePattern pattern;
     REQUIRE(pattern.color_at(make_point(0, 0, 0)) == Color::WHITE);
@@ -96,4 +97,13 @@ TEST_CASE("A stripe pattern alternates in x")
     REQUIRE(pattern.color_at(make_point(-0.1, 0, 0)) == Color::BLACK);
     REQUIRE(pattern.color_at(make_point(-1, 0, 0)) == Color::BLACK);
     REQUIRE(pattern.color_at(make_point(-1.1, 0, 0)) == Color::WHITE);
+}
+
+TEST_CASE("Gradient pattern linearly interpolates between colors")
+{
+    GradientPattern pattern(Color::WHITE, Color::BLACK);
+    REQUIRE(pattern.color_at(make_point(0, 0, 0)) == Color::WHITE);
+    REQUIRE(pattern.color_at(make_point(0.25, 0, 0)) == make_color(0.75, 0.75, 0.75));
+    REQUIRE(pattern.color_at(make_point(0.5, 0, 0)) == make_color(0.5, 0.5, 0.5));
+    REQUIRE(pattern.color_at(make_point(0.75, 0, 0)) == make_color(0.25, 0.25, 0.25));
 }

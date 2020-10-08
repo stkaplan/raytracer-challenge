@@ -9,7 +9,7 @@
 
 namespace raytracer {
 
-class StripePattern : public Pattern {
+class StripePattern final : public Pattern {
 private:
     std::vector<Color> colors;
 
