@@ -34,4 +34,4 @@ public:
 
 } // namespace raytracer
 
-#endif // _PATTERN_H_
+#endif // _STRIPEPATTERN_H_

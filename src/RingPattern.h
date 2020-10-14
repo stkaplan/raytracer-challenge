@@ -1,5 +1,5 @@
-#ifndef _GRADIENTPATTERN_H_
-#define _GRADIENTPATTERN_H_
+#ifndef _RINGPATTERN_H_
+#define _RINGPATTERN_H_
 
 #include "Color.h"
 #include "Pattern.h"
@@ -9,17 +9,17 @@
 
 namespace raytracer {
 
-class GradientPattern final : public Pattern {
+class RingPattern final : public Pattern {
 private:
     Color color1, color2;
 
     bool isEqual(const Pattern& o) const override {
-        auto other = static_cast<const GradientPattern&>(o);
+        auto other = static_cast<const RingPattern&>(o);
         return color1 == other.color1 && color2 == other.color2;
     }
 
 public:
-    GradientPattern(const Color& color1, const Color& color2)
+    RingPattern(const Color& color1, const Color& color2)
         : color1(color1), color2(color2)
     { }
 
@@ -31,4 +31,4 @@ public:
 
 } // namespace raytracer
 
-#endif // _GRADIENTPATTERN_H_
+#endif // _RINGPATTERN_H_

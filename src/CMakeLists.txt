@@ -21,6 +21,8 @@ add_library(raytracer SHARED
     Plane.h
     PointLight.h
     Ray.h
+    RingPattern.cpp
+    RingPattern.h
     Shape.cpp
     Shape.h
     Sphere.cpp
