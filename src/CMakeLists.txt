@@ -7,6 +7,8 @@ add_library(raytracer SHARED
     Camera.h
     Canvas.cpp
     Canvas.h
+    CheckerPattern.cpp
+    CheckerPattern.h
     Color.h
     GradientPattern.cpp
     GradientPattern.h

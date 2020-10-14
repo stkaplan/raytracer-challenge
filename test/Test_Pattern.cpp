@@ -4,6 +4,7 @@
 
 #include "Test_Pattern.h"
 
+#include "CheckerPattern.h"
 #include "GradientPattern.h"
 #include "RingPattern.h"
 #include "StripePattern.h"
@@ -117,4 +118,28 @@ TEST_CASE("Ring pattern should extend in both x and z")
     REQUIRE(pattern.color_at(make_point(1, 0, 0)) == Color::BLACK);
     REQUIRE(pattern.color_at(make_point(0, 0, 1)) == Color::BLACK);
     REQUIRE(pattern.color_at(make_point(0.708, 0, 0.708)) == Color::BLACK);
+}
+
+TEST_CASE("Checker pattern should repeat in x")
+{
+    CheckerPattern pattern(Color::WHITE, Color::BLACK);
+    REQUIRE(pattern.color_at(make_point(0, 0, 0)) == Color::WHITE);
+    REQUIRE(pattern.color_at(make_point(0.99, 0, 0)) == Color::WHITE);
+    REQUIRE(pattern.color_at(make_point(1.01, 0, 0)) == Color::BLACK);
+}
+
+TEST_CASE("Checker pattern should repeat in y")
+{
+    CheckerPattern pattern(Color::WHITE, Color::BLACK);
+    REQUIRE(pattern.color_at(make_point(0, 0, 0)) == Color::WHITE);
+    REQUIRE(pattern.color_at(make_point(0, 0.99, 0)) == Color::WHITE);
+    REQUIRE(pattern.color_at(make_point(0, 1.01, 0)) == Color::BLACK);
+}
+
+TEST_CASE("Checker pattern should repeat in z")
+{
+    CheckerPattern pattern(Color::WHITE, Color::BLACK);
+    REQUIRE(pattern.color_at(make_point(0, 0, 0)) == Color::WHITE);
+    REQUIRE(pattern.color_at(make_point(0, 0, 0.99)) == Color::WHITE);
+    REQUIRE(pattern.color_at(make_point(0, 0, 1.01)) == Color::BLACK);
 }
