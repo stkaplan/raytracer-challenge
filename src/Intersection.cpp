@@ -14,7 +14,8 @@ HitComputation Intersection::prepare_hit_computation(const Ray& ray) {
     auto normal_vector = object->normal_at(point);
     bool inside = normal_vector.dot_product(eye_vector) < 0;
     if (inside) normal_vector = -normal_vector;
-    return HitComputation(*this, point, eye_vector, normal_vector, inside);
+    auto reflect_vector = ray.get_direction().reflect(normal_vector);
+    return HitComputation(*this, point, eye_vector, normal_vector, reflect_vector, inside);
 }
 
 std::optional<Intersection> find_hit(const std::vector<Intersection>& intersections) {

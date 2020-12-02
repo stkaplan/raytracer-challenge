@@ -1,6 +1,7 @@
 #include "catch.hpp"
 #include "Intersection.h"
 
+#include "Plane.h"
 #include "Ray.h"
 #include "Sphere.h"
 
@@ -106,4 +107,13 @@ TEST_CASE("The hit should offset the point")
     auto comps = i.prepare_hit_computation(r);
     REQUIRE(comps.get_over_point().z() < -detail::EPSILON / 2.0);
     REQUIRE(comps.get_point().z() > comps.get_over_point().z());
+}
+
+TEST_CASE("Pre-computing the reflection vector")
+{
+    Plane p;
+    Ray r(make_point(0, 1, -1), make_vector(0, -std::sqrt(2.0)/2.0, std::sqrt(2.0)/2.0));
+    Intersection i(std::sqrt(2.0), p);
+    auto comps = i.prepare_hit_computation(r);
+    REQUIRE(comps.get_reflect_vector() == make_vector(0, std::sqrt(2.0)/2.0, std::sqrt(2.0)/2.0));
 }
