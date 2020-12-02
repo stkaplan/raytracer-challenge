@@ -72,4 +72,15 @@ bool World::is_shadowed(const Tuple4& point) const {
     auto hit = find_hit(intersect(ray));
     return hit && hit->get_t() < vector.magnitude();
 }
+
+Color World::reflected_color(const HitComputation &comp) const {
+    double reflectivity = comp.get_intersection().get_object().get_material().get_reflectivity();
+    if (reflectivity == 0.0) {
+        return make_color(0, 0, 0);
+    }
+
+    Ray r(comp.get_over_point(), comp.get_reflect_vector());
+    Color c = color_at(r);
+    return c  * reflectivity;
+}
 } // namespace raytracer

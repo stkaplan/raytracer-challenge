@@ -38,6 +38,7 @@ public:
     Color shade_hit(const HitComputation& comp) const;
     Color color_at(const Ray& r) const;
     bool is_shadowed(const Tuple4& point) const;
+    Color reflected_color(const HitComputation& comp) const;
 };
 
 } // namespace raytracer
