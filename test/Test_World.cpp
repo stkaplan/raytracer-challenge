@@ -184,3 +184,20 @@ TEST_CASE("Reflected color for a reflective material")
     auto comps = i.prepare_hit_computation(r);
     REQUIRE(w.reflected_color(comps) == make_color(0.19032, 0.2379, 0.14274));
 }
+
+TEST_CASE("shade_hit() with a reflective material")
+{
+    World w = World::default_world();
+    {
+        auto p = std::make_unique<Plane>();
+        p->get_material().set_reflectivity(0.5);
+        p->set_transform(translation(0, -1, 0));
+        w.add_object(std::move(p));
+    }
+    auto& p = w.get_object(2);
+
+    Ray r(make_point(0, 0, -3), make_vector(0, -std::sqrt(2.0)/2.0, std::sqrt(2.0)/2.0));
+    Intersection i(std::sqrt(2.0), p);
+    auto comps = i.prepare_hit_computation(r);
+    REQUIRE(w.shade_hit(comps) == make_color(0.87677, 0.92436, 0.82918));
+}
