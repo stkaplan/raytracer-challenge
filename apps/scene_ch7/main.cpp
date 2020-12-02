@@ -17,7 +17,7 @@ int main()
     World world;
     Material floor_material(make_color(1.0, 0.9, 0.9),
             Material::DEFAULT_AMBIENT, Material::DEFAULT_DIFFUSE, 0.0,
-            Material::DEFAULT_SHININESS);
+            Material::DEFAULT_SHININESS, Material::DEFAULT_REFLECTIVITY);
 
     auto floor = std::make_unique<Sphere>();
     floor->set_transform(scale(10, 0.01, 10));
@@ -41,19 +41,22 @@ int main()
     auto middle = std::make_unique<Sphere>();
     middle->set_transform(translation(-0.5, 1, 0.5));
     middle->set_material(Material(make_color(0.1, 1.0, 0.5),
-            Material::DEFAULT_AMBIENT, 0.7, 0.3, Material::DEFAULT_SHININESS));
+            Material::DEFAULT_AMBIENT, 0.7, 0.3, Material::DEFAULT_SHININESS,
+            Material::DEFAULT_REFLECTIVITY));
     world.add_object(std::move(middle));
 
     auto right = std::make_unique<Sphere>();
     right->set_transform(translation(1.5, 0.5, -0.5) * scale(0.5, 0.5, 0.5));
     right->set_material(Material(make_color(0.5, 1, 0.1),
-            Material::DEFAULT_AMBIENT, 0.7, 0.3, Material::DEFAULT_SHININESS));
+            Material::DEFAULT_AMBIENT, 0.7, 0.3, Material::DEFAULT_SHININESS,
+            Material::DEFAULT_REFLECTIVITY));
     world.add_object(std::move(right));
 
     auto left = std::make_unique<Sphere>();
     left->set_transform(translation(-1.5, 0.33, -0.75) * scale(0.33, 0.33, 0.33));
     left->set_material(Material(make_color(1.0, 0.8, 0.1),
-            Material::DEFAULT_AMBIENT, 0.7, 0.3, Material::DEFAULT_SHININESS));
+            Material::DEFAULT_AMBIENT, 0.7, 0.3, Material::DEFAULT_SHININESS,
+            Material::DEFAULT_REFLECTIVITY));
     world.add_object(std::move(left));
 
     PointLight light(make_point(-10, 10, -10), make_color(1, 1, 1));

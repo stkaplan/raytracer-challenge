@@ -19,6 +19,7 @@ private:
     double diffuse;
     double specular;
     double shininess;
+    double reflectivity;
     std::shared_ptr<Pattern> pattern;
 
 public:
@@ -26,18 +27,21 @@ public:
     static constexpr double DEFAULT_DIFFUSE = 0.9;
     static constexpr double DEFAULT_SPECULAR = 0.9;
     static constexpr double DEFAULT_SHININESS = 200.0;
+    static constexpr double DEFAULT_REFLECTIVITY = 0.0;
 
     Material()
         : color(make_color(1, 1, 1)), ambient(DEFAULT_AMBIENT),
           diffuse(DEFAULT_DIFFUSE), specular(DEFAULT_SPECULAR),
-          shininess(DEFAULT_SHININESS)
+          shininess(DEFAULT_SHININESS), reflectivity(DEFAULT_REFLECTIVITY)
     { }
 
     Material(const Color& color, double ambient, double diffuse,
              double specular, double shininess,
+             double reflectivity,
              std::shared_ptr<Pattern> pattern = nullptr)
         : color(color), ambient(ambient), diffuse(diffuse),
-          specular(specular), shininess(shininess), pattern(pattern)
+          specular(specular), shininess(shininess),
+          reflectivity(reflectivity), pattern(pattern)
     { }
 
     bool operator==(const Material& other) const = default;
@@ -61,6 +65,9 @@ public:
 
     double get_shininess() const { return shininess; }
     void set_shininess(double val) { shininess = val; }
+
+    double get_reflectivity() const { return reflectivity; }
+    void set_reflectivity(double val) { reflectivity = val; }
 
     std::shared_ptr<Pattern> get_pattern() const { return pattern; }
     void set_pattern(const std::shared_ptr<Pattern> p) { pattern = p; }

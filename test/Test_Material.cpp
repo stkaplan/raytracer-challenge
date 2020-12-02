@@ -17,23 +17,25 @@ TEST_CASE("Default material")
     REQUIRE(m.get_diffuse() == 0.9);
     REQUIRE(m.get_specular() == 0.9);
     REQUIRE(m.get_shininess() == 200);
+    REQUIRE(m.get_reflectivity() == 0.0);
 }
 
 TEST_CASE("Non-default material")
 {
-    Material m(make_color(0.5, 0.6, 0.7), 1.5, 2.5, 3.5, 4.5);
+    Material m(make_color(0.5, 0.6, 0.7), 1.5, 2.5, 3.5, 4.5, 5.5);
     REQUIRE(m.get_color() == make_color(0.5, 0.6, 0.7));
     REQUIRE(m.get_ambient() == 1.5);
     REQUIRE(m.get_diffuse() == 2.5);
     REQUIRE(m.get_specular() == 3.5);
     REQUIRE(m.get_shininess() == 4.5);
+    REQUIRE(m.get_reflectivity() == 5.5);
 }
 
 TEST_CASE("Material equality")
 {
-    Material m(make_color(0.5, 0.6, 0.7), 1.5, 2.5, 3.5, 4.5);
-    Material m2(make_color(0.5, 0.6, 0.7), 1.5, 2.5, 3.5, 4.5);
-    Material m3(make_color(0.5, 0.6, 0.7), 1.5, 2.5, 3.5, 4.6);
+    Material m(make_color(0.5, 0.6, 0.7), 1.5, 2.5, 3.5, 4.5, 5.5);
+    Material m2(make_color(0.5, 0.6, 0.7), 1.5, 2.5, 3.5, 4.5, 5.5);
+    Material m3(make_color(0.5, 0.6, 0.7), 1.5, 2.5, 3.5, 4.6, 5.5);
     REQUIRE(m == m2);
     REQUIRE(m != m3);
 }
@@ -108,7 +110,8 @@ TEST_CASE("Lighting with surface in shadow")
 TEST_CASE("Lighting with a pattern applied")
 {
     auto pattern = std::make_shared<StripePattern>();
-    Material m(make_color(1, 1, 1), 1.0, 0.0, 0.0, Material::DEFAULT_SHININESS, pattern);
+    Material m(make_color(1, 1, 1), 1.0, 0.0, 0.0, Material::DEFAULT_SHININESS,
+            Material::DEFAULT_REFLECTIVITY, pattern);
     auto eye_vector = make_vector(0, 0, -1);
     auto normal_vector = make_vector(0, 0, -1);
     PointLight light(make_point(0, 0, -10), make_color(1, 1, 1));
