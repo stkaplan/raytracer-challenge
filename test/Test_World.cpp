@@ -201,3 +201,42 @@ TEST_CASE("shade_hit() with a reflective material")
     auto comps = i.prepare_hit_computation(r);
     REQUIRE(w.shade_hit(comps) == make_color(0.87677, 0.92436, 0.82918));
 }
+
+TEST_CASE("color_at() with mututally reflective surfaces")
+{
+    World w;
+    w.set_light(PointLight(make_point(0, 0, 0), make_color(1, 1, 1)));
+    {
+        auto lower = std::make_unique<Plane>();
+        lower->get_material().set_reflectivity(1.0);
+        lower->set_transform(translation(0, -1, 0));
+        w.add_object(std::move(lower));
+
+        auto upper = std::make_unique<Plane>();
+        upper->get_material().set_reflectivity(1.0);
+        upper->set_transform(translation(0, 1, 0));
+        w.add_object(std::move(upper));
+    }
+
+    Ray r(make_point(0, 0, 0), make_vector(0, 1, 0));
+    auto color = w.color_at(r);
+    REQUIRE(color == make_color(11.4, 11.4, 11.4));
+}
+
+TEST_CASE("Reflected color at maximum recursive depth")
+{
+    World w = World::default_world();
+    {
+        auto p = std::make_unique<Plane>();
+        p->get_material().set_reflectivity(0.5);
+        p->set_transform(translation(0, -1, 0));
+        w.add_object(std::move(p));
+    }
+    auto& p = w.get_object(2);
+
+    Ray r(make_point(0, 0, -3), make_vector(0, -std::sqrt(2.0)/2.0, std::sqrt(2.0)/2.0));
+    Intersection i(std::sqrt(2.0), p);
+    auto comps = i.prepare_hit_computation(r);
+    auto color = w.reflected_color(comps, 0);
+    REQUIRE(color == make_color(0, 0, 0));
+}

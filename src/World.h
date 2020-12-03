@@ -20,6 +20,8 @@ private:
     std::optional<PointLight> light;
     std::vector<std::unique_ptr<Shape>> objects;
 
+    static constexpr int MAX_RECURSION_DEPTH = 5;
+
 public:
     World() { }
     static World default_world();
@@ -35,10 +37,10 @@ public:
     void add_object(std::unique_ptr<Shape> s) { objects.push_back(std::move(s)); }
 
     std::vector<Intersection> intersect(const Ray& ray) const;
-    Color shade_hit(const HitComputation& comp) const;
-    Color color_at(const Ray& r) const;
+    Color shade_hit(const HitComputation& comp, int remaining = MAX_RECURSION_DEPTH) const;
+    Color color_at(const Ray& r, int remaining = MAX_RECURSION_DEPTH) const;
     bool is_shadowed(const Tuple4& point) const;
-    Color reflected_color(const HitComputation& comp) const;
+    Color reflected_color(const HitComputation& comp, int remaining = MAX_RECURSION_DEPTH) const;
 };
 
 } // namespace raytracer

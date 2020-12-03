@@ -46,24 +46,23 @@ std::vector<Intersection> World::intersect(const Ray& ray) const {
     return intersections;
 }
 
-Color World::shade_hit(const HitComputation& comp) const {
+Color World::shade_hit(const HitComputation& comp, int remaining) const {
     const Material& material = comp.get_intersection().get_object().get_material();
     assert(light.has_value()); // TODO: What happens if there's no light?
     auto surface = material.lighting(comp.get_intersection().get_object(),
             *light, comp.get_point(), comp.get_eye_vector(),
             comp.get_normal_vector(), is_shadowed(comp.get_over_point()));
-    auto reflected = reflected_color(comp);
-    // TODO: handle case of infinite reflections
+    auto reflected = reflected_color(comp, remaining);
     return surface + reflected;
 }
 
-Color World::color_at(const Ray& r) const {
+Color World::color_at(const Ray& r, int remaining) const {
     auto intersections = intersect(r);
     auto hit = find_hit(intersections);
     if (!hit) return Color(0, 0, 0);
 
     auto comp = hit->prepare_hit_computation(r);
-    return shade_hit(comp);
+    return shade_hit(comp, remaining);
 }
 
 bool World::is_shadowed(const Tuple4& point) const {
@@ -76,14 +75,18 @@ bool World::is_shadowed(const Tuple4& point) const {
     return hit && hit->get_t() < vector.magnitude();
 }
 
-Color World::reflected_color(const HitComputation &comp) const {
+Color World::reflected_color(const HitComputation &comp, int remaining) const {
+    if (remaining == 0) {
+        return make_color(0, 0, 0);
+    }
+
     double reflectivity = comp.get_intersection().get_object().get_material().get_reflectivity();
     if (reflectivity == 0.0) {
         return make_color(0, 0, 0);
     }
 
     Ray r(comp.get_over_point(), comp.get_reflect_vector());
-    Color c = color_at(r);
+    Color c = color_at(r, remaining-1);
     return c  * reflectivity;
 }
 } // namespace raytracer
