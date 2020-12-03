@@ -53,7 +53,8 @@ Color World::shade_hit(const HitComputation& comp, int remaining) const {
             *light, comp.get_point(), comp.get_eye_vector(),
             comp.get_normal_vector(), is_shadowed(comp.get_over_point()));
     auto reflected = reflected_color(comp, remaining);
-    return surface + reflected;
+    auto refracted = refracted_color(comp, remaining);
+    return surface + reflected + refracted;
 }
 
 Color World::color_at(const Ray& r, int remaining) const {
@@ -61,7 +62,7 @@ Color World::color_at(const Ray& r, int remaining) const {
     auto hit = find_hit(intersections);
     if (!hit) return Color(0, 0, 0);
 
-    auto comp = hit->prepare_hit_computation(r);
+    auto comp = hit->prepare_hit_computation(r, intersections);
     return shade_hit(comp, remaining);
 }
 
@@ -77,16 +78,41 @@ bool World::is_shadowed(const Tuple4& point) const {
 
 Color World::reflected_color(const HitComputation &comp, int remaining) const {
     if (remaining == 0) {
-        return make_color(0, 0, 0);
+        return Color::BLACK;
     }
 
     double reflectivity = comp.get_intersection().get_object().get_material().get_reflectivity();
     if (reflectivity == 0.0) {
-        return make_color(0, 0, 0);
+        return Color::BLACK;
     }
 
     Ray r(comp.get_over_point(), comp.get_reflect_vector());
     Color c = color_at(r, remaining-1);
     return c  * reflectivity;
+}
+
+Color World::refracted_color(const HitComputation &comp, int remaining) const {
+    if (remaining == 0) {
+        return Color::BLACK;
+    }
+
+    auto transparency = comp.get_intersection().get_object().get_material().get_transparency();
+    if (transparency == 0.0) {
+        return Color::BLACK;
+    }
+
+    // Check for total internal reflection.
+    auto n_ratio = comp.get_n1() / comp.get_n2();
+    auto cos_i = comp.get_eye_vector().dot_product(comp.get_normal_vector());
+    auto sin2_t = std::pow(n_ratio, 2) * (1.0 - std::pow(cos_i, 2));
+    if (sin2_t > 1.0) {
+        return Color::BLACK;
+    }
+
+    auto cos_t = std::sqrt(1.0 - sin2_t);
+    auto direction = comp.get_normal_vector() * (n_ratio * cos_i - cos_t) - comp.get_eye_vector() * n_ratio;
+    Ray refract_ray(comp.get_under_point(), direction);
+    Color c = color_at(refract_ray, remaining-1);
+    return c * transparency;
 }
 } // namespace raytracer

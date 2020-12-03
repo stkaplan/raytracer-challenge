@@ -41,6 +41,7 @@ public:
     Color color_at(const Ray& r, int remaining = MAX_RECURSION_DEPTH) const;
     bool is_shadowed(const Tuple4& point) const;
     Color reflected_color(const HitComputation& comp, int remaining = MAX_RECURSION_DEPTH) const;
+    Color refracted_color(const HitComputation& comp, int remaining = MAX_RECURSION_DEPTH) const;
 };
 
 } // namespace raytracer

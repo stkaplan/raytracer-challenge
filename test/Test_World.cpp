@@ -5,6 +5,7 @@
 #include "PointLight.h"
 #include "Ray.h"
 #include "Sphere.h"
+#include "Test_Pattern.h"
 
 using namespace raytracer;
 
@@ -239,4 +240,84 @@ TEST_CASE("Reflected color at maximum recursive depth")
     auto comps = i.prepare_hit_computation(r);
     auto color = w.reflected_color(comps, 0);
     REQUIRE(color == make_color(0, 0, 0));
+}
+
+TEST_CASE("Refracted color with an opaque surface")
+{
+    World w = World::default_world();
+    auto& s = w.get_object(0);
+
+    Ray r(make_point(0, 0, -5), make_vector(0, 0, 1));
+    std::vector<Intersection> xs = {{4, s}, {6, s}};
+    auto comps = xs[0].prepare_hit_computation(r, xs);
+    REQUIRE(w.reflected_color(comps) == make_color(0, 0, 0));
+}
+
+TEST_CASE("Refracted color at the maximum recursive depth")
+{
+    World w = World::default_world();
+    auto& s = w.get_object(0);
+    s.get_material().set_transparency(1.0);
+    s.get_material().set_refractive_index(1.5);
+
+    Ray r(make_point(0, 0, -5), make_vector(0, 0, 1));
+    std::vector<Intersection> xs = {{4, s}, {6, s}};
+    auto comps = xs[0].prepare_hit_computation(r, xs);
+    REQUIRE(w.refracted_color(comps, 0) == make_color(0, 0, 0));
+}
+
+TEST_CASE("Refracted color under total internal reflection")
+{
+    World w = World::default_world();
+    auto& s = w.get_object(0);
+    s.get_material().set_transparency(1.0);
+    s.get_material().set_refractive_index(1.5);
+
+    Ray r(make_point(0, 0, std::sqrt(2.0)/2.0), make_vector(0, 1, 0));
+    std::vector<Intersection> xs = {{-std::sqrt(2.0)/2.0, s}, {std::sqrt(2.0)/2.0, s}};
+    auto comps = xs[1].prepare_hit_computation(r, xs);
+    REQUIRE(w.refracted_color(comps) == make_color(0, 0, 0));
+}
+
+TEST_CASE("Refracted color with refracted ray")
+{
+    World w = World::default_world();
+
+    auto& a = w.get_object(0);
+    auto test_pattern = std::make_shared<TestPattern>();
+    a.get_material().set_ambient(1.0);
+    a.get_material().set_pattern(test_pattern);
+
+    auto& b = w.get_object(1);
+    b.get_material().set_transparency(1.0);
+    b.get_material().set_refractive_index(1.5);
+
+    Ray r(make_point(0, 0, 0.1), make_vector(0, 1, 0));
+    std::vector<Intersection> xs = {{-0.9899, a}, {-0.4899, b}, {0.4899, b}, {0.9899, a}};
+    auto comps = xs[2].prepare_hit_computation(r, xs);
+    REQUIRE(w.refracted_color(comps) == make_color(0, 0.99888, 0.04725));
+}
+
+TEST_CASE("shade_hit() with a transparent material")
+{
+    World w = World::default_world();
+    {
+        auto floor = std::make_unique<Plane>();
+        floor->set_transform(translation(0, -1, 0));
+        floor->get_material().set_transparency(0.5);
+        floor->get_material().set_refractive_index(1.5);
+        w.add_object(std::move(floor));
+
+        auto ball = std::make_unique<Sphere>();
+        ball->get_material().set_color(make_color(1, 0, 0));
+        ball->get_material().set_ambient(0.5);
+        ball->set_transform(translation(0, -3.5, -0.5));
+        w.add_object(std::move(ball));
+    }
+    auto& floor = w.get_object(2);
+
+    Ray r(make_point(0, 0, -3), make_vector(0, -std::sqrt(2.0)/2.0, std::sqrt(2.0)/2.0));
+    std::vector<Intersection> xs = {{std::sqrt(2.0), floor}};
+    auto comps = xs[0].prepare_hit_computation(r, xs);
+    REQUIRE(w.shade_hit(comps) == make_color(0.93642, 0.68642, 0.68642));
 }
