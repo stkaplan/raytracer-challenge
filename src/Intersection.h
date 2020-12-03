@@ -40,7 +40,7 @@ public:
         return os << "Intersection(" << i.t << ", " << i.object << ")";
     }
 
-    HitComputation prepare_hit_computation(const Ray& ray);
+    HitComputation prepare_hit_computation(const Ray& ray) const;
 };
 
 class HitComputation {

@@ -8,7 +8,7 @@
 
 namespace raytracer {
 
-HitComputation Intersection::prepare_hit_computation(const Ray& ray) {
+HitComputation Intersection::prepare_hit_computation(const Ray& ray) const {
     auto point = ray.position(t);
     auto eye_vector = -ray.get_direction();
     auto normal_vector = object->normal_at(point);
