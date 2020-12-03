@@ -8,6 +8,24 @@
 
 namespace raytracer {
 
+double HitComputation::schlick() const {
+    auto cos = eye_vector.dot_product(normal_vector);
+
+    if (n1 > n2) {
+        auto n = n1 / n2;
+        auto sin2_t = std::pow(n, 2) * (1.0 - std::pow(cos, 2));
+        if (sin2_t > 1.0) {
+            return 1.0;
+        }
+
+        auto cos_t = std::sqrt(1.0 - sin2_t);
+        cos = cos_t;
+    }
+
+    auto r0 = std::pow((n1 - n2) / (n1 + n2), 2);
+    return r0 + (1.0 - r0) * std::pow(1.0 - cos, 5);
+}
+
 HitComputation Intersection::prepare_hit_computation(const Ray& ray) const {
     return prepare_hit_computation(ray, {*this});
 }

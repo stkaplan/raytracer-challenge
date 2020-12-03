@@ -321,3 +321,28 @@ TEST_CASE("shade_hit() with a transparent material")
     auto comps = xs[0].prepare_hit_computation(r, xs);
     REQUIRE(w.shade_hit(comps) == make_color(0.93642, 0.68642, 0.68642));
 }
+
+TEST_CASE("shade_hit() with a reflective, transparent material")
+{
+    World w = World::default_world();
+    {
+        auto floor = std::make_unique<Plane>();
+        floor->set_transform(translation(0, -1, 0));
+        floor->get_material().set_reflectivity(0.5);
+        floor->get_material().set_transparency(0.5);
+        floor->get_material().set_refractive_index(1.5);
+        w.add_object(std::move(floor));
+
+        auto ball = std::make_unique<Sphere>();
+        ball->get_material().set_color(make_color(1, 0, 0));
+        ball->get_material().set_ambient(0.5);
+        ball->set_transform(translation(0, -3.5, -0.5));
+        w.add_object(std::move(ball));
+    }
+    auto& floor = w.get_object(2);
+
+    Ray r(make_point(0, 0, -3), make_vector(0, -std::sqrt(2.0)/2.0, std::sqrt(2.0)/2.0));
+    std::vector<Intersection> xs = {{std::sqrt(2.0), floor}};
+    auto comps = xs[0].prepare_hit_computation(r, xs);
+    REQUIRE(w.shade_hit(comps) == make_color(0.93391, 0.69643, 0.69243));
+}

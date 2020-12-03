@@ -54,7 +54,13 @@ Color World::shade_hit(const HitComputation& comp, int remaining) const {
             comp.get_normal_vector(), is_shadowed(comp.get_over_point()));
     auto reflected = reflected_color(comp, remaining);
     auto refracted = refracted_color(comp, remaining);
-    return surface + reflected + refracted;
+
+    if (material.get_reflectivity() > 0.0 && material.get_transparency() > 0.0) {
+        auto reflectance = comp.schlick();
+        return surface + (reflected * reflectance) + (refracted * (1.0 - reflectance));
+    } else {
+        return surface + reflected + refracted;
+    }
 }
 
 Color World::color_at(const Ray& r, int remaining) const {

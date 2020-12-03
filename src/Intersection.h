@@ -80,6 +80,8 @@ class HitComputation {
         double get_n1() const { return n1; }
         double get_n2() const { return n2; }
         bool is_inside() const { return inside; }
+
+        double schlick() const;
 };
 
 // Returns intersection with smallest non-negative t.

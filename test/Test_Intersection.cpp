@@ -154,3 +154,30 @@ TEST_CASE("Under point is offset below the surface")
     REQUIRE(comps.get_under_point().z() > detail::EPSILON / 2.0);
     REQUIRE(comps.get_point().z() < comps.get_under_point().z());
 }
+
+TEST_CASE("Schlick approximation under total internal reflection")
+{
+    Sphere s = Sphere::glass_sphere();
+    Ray r(make_point(0, 0, std::sqrt(2.0)/2.0), make_vector(0, 1, 0));
+    std::vector<Intersection> xs = {{-std::sqrt(2.0)/2.0, s}, {std::sqrt(2.0)/2.0, s}};
+    auto comps = xs[1].prepare_hit_computation(r, xs);
+    REQUIRE(comps.schlick() == 1.0);
+}
+
+TEST_CASE("Schlick approximation with perpendicular viewing angle")
+{
+    Sphere s = Sphere::glass_sphere();
+    Ray r(make_point(0, 0, 0), make_vector(0, 1, 0));
+    std::vector<Intersection> xs = {{-1, s}, {1, s}};
+    auto comps = xs[1].prepare_hit_computation(r, xs);
+    REQUIRE(comps.schlick() == Approx(0.04));
+}
+
+TEST_CASE("Schlick approximation with small angle and n2 > n1")
+{
+    Sphere s = Sphere::glass_sphere();
+    Ray r(make_point(0, 0.99, -2), make_vector(0, 0, 1));
+    std::vector<Intersection> xs = {{1.8589, s}};
+    auto comps = xs[0].prepare_hit_computation(r, xs);
+    REQUIRE(comps.schlick() == Approx(0.48873));
+}
