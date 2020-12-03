@@ -57,6 +57,7 @@ class HitComputation {
         bool inside;
 
         Tuple4 over_point;
+        Tuple4 under_point;
     public:
         HitComputation(const Intersection& intersection, Tuple4 point,
                        Tuple4 eye_vector, Tuple4 normal_vector,
@@ -66,6 +67,7 @@ class HitComputation {
               reflect_vector(reflect_vector), n1(n1), n2(n2), inside(inside)
         {
             over_point = point + normal_vector * detail::EPSILON;
+            under_point = point - normal_vector * detail::EPSILON;
         }
 
         const Intersection& get_intersection() const { return intersection; }
@@ -74,6 +76,7 @@ class HitComputation {
         const Tuple4& get_normal_vector() const { return normal_vector; }
         const Tuple4& get_reflect_vector() const { return reflect_vector; }
         const Tuple4& get_over_point() const { return over_point; }
+        const Tuple4& get_under_point() const { return under_point; }
         double get_n1() const { return n1; }
         double get_n2() const { return n2; }
         bool is_inside() const { return inside; }

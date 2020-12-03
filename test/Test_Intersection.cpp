@@ -141,3 +141,16 @@ TEST_CASE("Finding n1 and n2 at various intersections")
         REQUIRE(comps.get_n2() == exp[i][1]);
     }
 }
+
+TEST_CASE("Under point is offset below the surface")
+{
+    Ray r(make_point(0, 0, -5), make_vector(0, 0, 1));
+    Sphere s = Sphere::glass_sphere();
+    s.set_transform(translation(0, 0, 1));
+
+    Intersection i(5, s);
+    std::vector<Intersection> xs = {i};
+    auto comps = i.prepare_hit_computation(r, xs);
+    REQUIRE(comps.get_under_point().z() > detail::EPSILON / 2.0);
+    REQUIRE(comps.get_point().z() < comps.get_under_point().z());
+}
