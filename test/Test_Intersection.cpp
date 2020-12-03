@@ -117,3 +117,27 @@ TEST_CASE("Pre-computing the reflection vector")
     auto comps = i.prepare_hit_computation(r);
     REQUIRE(comps.get_reflect_vector() == make_vector(0, std::sqrt(2.0)/2.0, std::sqrt(2.0)/2.0));
 }
+
+TEST_CASE("Finding n1 and n2 at various intersections")
+{
+    Sphere a = Sphere::glass_sphere();
+    a.set_transform(scale(2, 2, 2));
+    a.get_material().set_refractive_index(1.5);
+
+    Sphere b = Sphere::glass_sphere();
+    b.set_transform(translation(0, 0, -0.25));
+    b.get_material().set_refractive_index(2.0);
+
+    Sphere c = Sphere::glass_sphere();
+    c.set_transform(translation(0, 0, 0.25));
+    c.get_material().set_refractive_index(2.5);
+
+    Ray r(make_point(0, 0, -4), make_vector(0, 0, 1));
+    std::vector<Intersection> xs = {{2, a}, {2.75, b}, {3.25, c}, {4.75, b}, {5.25, c}, {6, a}};
+    std::vector<std::array<double, 2>> exp = {{1.0, 1.5}, {1.5, 2.0}, {2.0, 2.5}, {2.5, 2.5}, {2.5, 1.5}, {1.5, 1.0}};
+    for (size_t i = 0; i < xs.size(); ++i) {
+        auto comps = xs[i].prepare_hit_computation(r, xs);
+        REQUIRE(comps.get_n1() == exp[i][0]);
+        REQUIRE(comps.get_n2() == exp[i][1]);
+    }
+}

@@ -81,3 +81,11 @@ TEST_CASE("Normal on scaled and rotated sphere")
     auto n = s.local_normal_at(make_point(0, 0.97014, -0.24254));
     REQUIRE(n == make_vector(0, 0.97014, -0.24254));
 }
+
+TEST_CASE("Helper for producing sphere with glassy material")
+{
+    Sphere s = Sphere::glass_sphere();
+    REQUIRE(s.get_transform() == make_identity<double, 4>());
+    REQUIRE(s.get_material().get_transparency() == 1.0);
+    REQUIRE(s.get_material().get_refractive_index() == 1.5);
+}

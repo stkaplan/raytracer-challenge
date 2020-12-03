@@ -20,6 +20,8 @@ private:
     double specular;
     double shininess;
     double reflectivity;
+    double transparency;
+    double refractive_index;
     std::shared_ptr<Pattern> pattern;
 
 public:
@@ -28,11 +30,15 @@ public:
     static constexpr double DEFAULT_SPECULAR = 0.9;
     static constexpr double DEFAULT_SHININESS = 200.0;
     static constexpr double DEFAULT_REFLECTIVITY = 0.0;
+    static constexpr double DEFAULT_TRANSPARENCY = 0.0;
+    static constexpr double DEFAULT_REFRACTIVE_INDEX = 1.0;
 
     Material()
         : color(make_color(1, 1, 1)), ambient(DEFAULT_AMBIENT),
           diffuse(DEFAULT_DIFFUSE), specular(DEFAULT_SPECULAR),
-          shininess(DEFAULT_SHININESS), reflectivity(DEFAULT_REFLECTIVITY)
+          shininess(DEFAULT_SHININESS), reflectivity(DEFAULT_REFLECTIVITY),
+          transparency(DEFAULT_TRANSPARENCY),
+          refractive_index(DEFAULT_REFRACTIVE_INDEX)
     { }
 
     Material(const Color& color, double ambient, double diffuse,
@@ -41,7 +47,9 @@ public:
              std::shared_ptr<Pattern> pattern = nullptr)
         : color(color), ambient(ambient), diffuse(diffuse),
           specular(specular), shininess(shininess),
-          reflectivity(reflectivity), pattern(pattern)
+          reflectivity(reflectivity), transparency(DEFAULT_TRANSPARENCY),
+          refractive_index(DEFAULT_REFRACTIVE_INDEX),
+          pattern(pattern)
     { }
 
     bool operator==(const Material& other) const = default;
@@ -68,6 +76,12 @@ public:
 
     double get_reflectivity() const { return reflectivity; }
     void set_reflectivity(double val) { reflectivity = val; }
+
+    double get_transparency() const { return transparency; }
+    void set_transparency(double val) { transparency = val; }
+
+    double get_refractive_index() const { return refractive_index; }
+    void set_refractive_index(double val) { refractive_index = val; }
 
     std::shared_ptr<Pattern> get_pattern() const { return pattern; }
     void set_pattern(const std::shared_ptr<Pattern> p) { pattern = p; }

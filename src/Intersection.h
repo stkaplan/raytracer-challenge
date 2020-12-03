@@ -40,6 +40,8 @@ public:
         return os << "Intersection(" << i.t << ", " << i.object << ")";
     }
 
+    HitComputation prepare_hit_computation(const Ray& ray,
+            const std::vector<Intersection>& xs) const;
     HitComputation prepare_hit_computation(const Ray& ray) const;
 };
 
@@ -50,16 +52,18 @@ class HitComputation {
         Tuple4 eye_vector;
         Tuple4 normal_vector;
         Tuple4 reflect_vector;
+        double n1;
+        double n2;
         bool inside;
 
         Tuple4 over_point;
     public:
         HitComputation(const Intersection& intersection, Tuple4 point,
                        Tuple4 eye_vector, Tuple4 normal_vector,
-                       Tuple4 reflect_vector, bool inside)
+                       Tuple4 reflect_vector, double n1, double n2, bool inside)
             : intersection(intersection), point(point),
               eye_vector(eye_vector), normal_vector(normal_vector),
-              reflect_vector(reflect_vector), inside(inside)
+              reflect_vector(reflect_vector), n1(n1), n2(n2), inside(inside)
         {
             over_point = point + normal_vector * detail::EPSILON;
         }
@@ -70,6 +74,8 @@ class HitComputation {
         const Tuple4& get_normal_vector() const { return normal_vector; }
         const Tuple4& get_reflect_vector() const { return reflect_vector; }
         const Tuple4& get_over_point() const { return over_point; }
+        double get_n1() const { return n1; }
+        double get_n2() const { return n2; }
         bool is_inside() const { return inside; }
 };
 

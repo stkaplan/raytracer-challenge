@@ -120,3 +120,10 @@ TEST_CASE("Lighting with a pattern applied")
     REQUIRE(c1 == make_color(1, 1, 1));
     REQUIRE(c2 == make_color(0, 0, 0));
 }
+
+TEST_CASE("Transparency and refractive index for default material")
+{
+    Material m;
+    REQUIRE(m.get_transparency() == 0.0);
+    REQUIRE(m.get_refractive_index() == 1.0);
+}
