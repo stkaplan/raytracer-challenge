@@ -5,6 +5,7 @@ set(TEST_PROGS
     Test_Camera
     Test_Canvas
     Test_Color
+    Test_Cube
     Test_Intersection
     Test_Material
     Test_Matrix

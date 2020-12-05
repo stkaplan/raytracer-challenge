@@ -10,6 +10,8 @@ add_library(raytracer SHARED
     CheckerPattern.cpp
     CheckerPattern.h
     Color.h
+    Cube.cpp
+    Cube.h
     GradientPattern.cpp
     GradientPattern.h
     Intersection.cpp
